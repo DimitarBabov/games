@@ -7,7 +7,8 @@ See **HOW-TO-PLAY.md** for the court map, target zones and machine positions.
 - **Shots**: `->` play in this order; `RANDOM:` set Order to random. `[V]` volley, `[O]` overhead. `(lob)` = riser on.
 - **Target**: `C / D` = odd balls C, even balls D. `D|D|B` = one target per shot, in the order listed.
 - **Card**: a picture of the level drawn like the Proton app (all cards are also in `Level-Cards.pdf`).
-- Inside every world: levels 1–3 repeat the **same ball**, 4–6 are fixed **patterns**, 7–9 are **random**, 10 is the **boss**.
+- **Stage**: worlds 1–9 go from the **same ball**, to fixed **patterns**, to **random** order, then the **boss**. World 10 mixes everything.
+- One-sided drills come in forehand / backhand (or deuce / ad) pairs. Fast track never skips a one-sided level.
 
 ## World 1: Rally Rookie · Consistency
 
@@ -51,7 +52,7 @@ _Push the ball past the service line. Some levels put the machine behind the bas
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 21 | L021 | Deep Forehand | same ball | Baseline center | M-F | 70 km/h | Top 1 (+500 rpm) | 5 | B | 10 | 6 / 7 / 8 | Aim high over the net | [card](level-cards/L021.png) |
 | 22 | L022 | Deep Backhand | same ball | Baseline center | M-B | 70 km/h | Top 1 (+500 rpm) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L022.png) |
-| 23 | L023 | Heavy Deep Forehand | same ball | Behind baseline | D-F | 80 km/h | Top 2 (+1000 rpm) | 5 | B | 10 | 6 / 7 / 8 | Machine behind the baseline: start 1 step back | [card](level-cards/L023.png) |
+| 23 | L023 | Heavy Deep Backhand | same ball | Behind baseline | D-B | 80 km/h | Top 2 (+1000 rpm) | 5 | B | 10 | 6 / 7 / 8 | Machine behind the baseline: start 1 step back | [card](level-cards/L023.png) |
 | 24 | L024 | Deep Ping-Pong | pattern | Baseline center | M-F -> M-B | 80 km/h | Top 1 (+500 rpm) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L024.png) |
 | 25 | L025 | Heavy Ping-Pong | pattern | Behind baseline | D-F -> D-B | 80 km/h | Top 2 (+1000 rpm) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L025.png) |
 | 26 | L026 | Middle Box Rally | pattern | Baseline center | M-F -> M-B | 80 km/h | Top 1 (+500 rpm) | 5 | G | 10 | 4 / 5 / 6 |  | [card](level-cards/L026.png) |
@@ -70,7 +71,7 @@ _Wide and short balls. Recover to the center mark after every shot._
 | 32 | L032 | Wide Backhand | same ball | Baseline center | M-BW | 70 km/h | Top 1 (+500 rpm) | 6 | A | 10 | 7 / 8 / 9 | Recover to the center mark | [card](level-cards/L032.png) |
 | 33 | L033 | Short Forehand | same ball | Baseline center | S-F | 70 km/h | Top 1 (+500 rpm) | 6 | A | 10 | 7 / 8 / 9 | Run in, hit, backpedal to the baseline | [card](level-cards/L033.png) |
 | 34 | L034 | Side to Side | pattern | Baseline center | M-FW -> M-BW | 70 km/h | Top 1 (+500 rpm) | 6 | A | 10 | 7 / 8 / 9 | Recover to the center mark | [card](level-cards/L034.png) |
-| 35 | L035 | In and Out | pattern | Baseline center | S-F -> D-F | 70 km/h | Top 1 (+500 rpm) | 6 | A | 10 | 7 / 8 / 9 | Run in for the short ball, back for the deep one | [card](level-cards/L035.png) |
+| 35 | L035 | In and Out | pattern | Baseline center | S-B -> D-B | 70 km/h | Top 1 (+500 rpm) | 6 | A | 10 | 7 / 8 / 9 | Backhand side: run in for the short ball, back for the deep one | [card](level-cards/L035.png) |
 | 36 | L036 | Four Corners | pattern | Baseline center | M-FW -> S-C -> M-BW -> D-C | 80 km/h | Top 1 (+500 rpm) | 5.5 | A | 10 | 7 / 8 / 9 | Recover to the center mark | [card](level-cards/L036.png) |
 | 37 | L037 | Wide Guess | random | Baseline center | RANDOM: M-FW, M-BW | 80 km/h | Top 1 (+500 rpm) | 5.5 | A | 10 | 7 / 8 / 9 | Recover to the center mark | [card](level-cards/L037.png) |
 | 38 | L038 | Short or Deep | random | Baseline center | RANDOM: S-F, S-B, D-F, D-B | 80 km/h | Top 1 (+500 rpm) | 5.5 | A | 10 | 7 / 8 / 9 |  | [card](level-cards/L038.png) |
@@ -85,7 +86,7 @@ _Crosscourt and down the line. The machine moves to a corner for real crosscourt
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 41 | L041 | Forehand Crosscourt | same ball | Baseline corner (right on screen) | M-F | 80 km/h | Top 1 (+500 rpm) | 5 | C | 10 | 6 / 7 / 8 | Machine in the corner: a real crosscourt rally | [card](level-cards/L041.png) |
 | 42 | L042 | Backhand Crosscourt | same ball | Baseline corner (left on screen) | M-B | 80 km/h | Top 1 (+500 rpm) | 5 | C | 10 | 6 / 7 / 8 | Machine in the corner | [card](level-cards/L042.png) |
-| 43 | L043 | Forehand Corner Box | same ball | Baseline corner (right on screen) | M-F | 80 km/h | Top 1 (+500 rpm) | 5 | E | 10 | 4 / 5 / 6 | Machine in the corner | [card](level-cards/L043.png) |
+| 43 | L043 | Backhand Corner Box | same ball | Baseline corner (left on screen) | M-B | 80 km/h | Top 1 (+500 rpm) | 5 | E | 10 | 4 / 5 / 6 | Machine in the corner | [card](level-cards/L043.png) |
 | 44 | L044 | Crosscourt Ping-Pong | pattern | Baseline center | M-F -> M-B | 80 km/h | Top 1 (+500 rpm) | 5 | C | 10 | 6 / 7 / 8 | Both sides crosscourt | [card](level-cards/L044.png) |
 | 45 | L045 | Switch It | pattern | Baseline center | M-F | 80 km/h | Top 1 (+500 rpm) | 5 | C / D | 10 | 6 / 7 / 8 | Odd balls crosscourt, even balls down the line | [card](level-cards/L045.png) |
 | 46 | L046 | Cross and Line | pattern | Baseline center | M-F -> M-B | 80 km/h | Top 1 (+500 rpm) | 5 | C / D | 10 | 6 / 7 / 8 | Forehand crosscourt, backhand down the line | [card](level-cards/L046.png) |
@@ -102,7 +103,7 @@ _Heavy topspin that kicks up and slice that stays low._
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 51 | L051 | Topspin Forehand | same ball | Baseline center | M-F | 80 km/h | Top 2 (+1000 rpm) | 5 | A | 10 | 7 / 8 / 9 | Ball kicks up: move back, hit at waist height | [card](level-cards/L051.png) |
 | 52 | L052 | Slice Backhand | same ball | Baseline center | M-B | 80 km/h | Slice 1 (-500 rpm) | 5 | A | 10 | 7 / 8 / 9 | Ball stays low: bend your knees | [card](level-cards/L052.png) |
-| 53 | L053 | Heavy Forehand | same ball | Behind baseline | D-F | 80 km/h | Top 3 (+2000 rpm) | 5 | A | 10 | 7 / 8 / 9 | High bouncer: step back or take it early | [card](level-cards/L053.png) |
+| 53 | L053 | Heavy Backhand | same ball | Behind baseline | D-B | 80 km/h | Top 3 (+2000 rpm) | 5 | A | 10 | 7 / 8 / 9 | High bouncer to the backhand: step back or take it early | [card](level-cards/L053.png) |
 | 54 | L054 | Topspin Ping-Pong | pattern | Baseline center | M-F -> M-B | 80 km/h | Top 2 (+1000 rpm) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L054.png) |
 | 55 | L055 | Slice Ping-Pong | pattern | Baseline center | M-F -> M-B | 80 km/h | Slice 1 (-500 rpm) | 5 | A | 10 | 7 / 8 / 9 |  | [card](level-cards/L055.png) |
 | 56 | L056 | Spin Switch | pattern | Baseline center | M-F (Top 2) -> M-B (Slice 1) -> M-F (Slice 1) -> M-B (Top 2) | 80 km/h | Mixed (per shot) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L056.png) |
@@ -119,7 +120,7 @@ _Apex stand: the machine serves. Split step, short swing, and give every return 
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 61 | L061 | Deuce Body Serve | same ball | Baseline center · **Apex stand** | S-F | 70 km/h | Flat (0 rpm) | 7 | A | 10 | 7 / 8 / 9 | Stand on the deuce side. Split step as the machine fires | [card](level-cards/L061.png) |
 | 62 | L062 | Ad Body Serve | same ball | Baseline center · **Apex stand** | S-B | 70 km/h | Flat (0 rpm) | 7 | A | 10 | 7 / 8 / 9 | Stand on the ad side | [card](level-cards/L062.png) |
-| 63 | L063 | Deuce Wide Serve | same ball | Baseline center · **Apex stand** | S-FW | 70 km/h | Flat (0 rpm) | 7 | A | 10 | 7 / 8 / 9 | Short swing, block it back | [card](level-cards/L063.png) |
+| 63 | L063 | Ad Wide Serve | same ball | Baseline center · **Apex stand** | S-BW | 70 km/h | Flat (0 rpm) | 7 | A | 10 | 7 / 8 / 9 | Stand on the ad side. Short swing, block it back | [card](level-cards/L063.png) |
 | 64 | L064 | Deuce T and Wide | pattern | Baseline center · **Apex stand** | S-C -> S-FW | 70 km/h | Flat (0 rpm) | 7 | A | 10 | 7 / 8 / 9 | Deuce side | [card](level-cards/L064.png) |
 | 65 | L065 | Ad T and Wide | pattern | Baseline center · **Apex stand** | S-C -> S-BW | 70 km/h | Flat (0 rpm) | 7 | A | 10 | 7 / 8 / 9 | Ad side | [card](level-cards/L065.png) |
 | 66 | L066 | Deuce, Ad, Deuce | pattern | Baseline center · **Apex stand** | S-F -> S-B | 80 km/h | Flat (0 rpm) | 8 | B | 10 | 6 / 7 / 8 | Switch sides after every return, like a match | [card](level-cards/L066.png) |
@@ -139,7 +140,7 @@ _Approach shots, volleys and overheads. Fast volley levels put the machine on th
 | 73 | L073 | Quick Hands | same ball | Service line center | S-F [V] | 60 km/h | Flat (0 rpm) | 5 | A | 10 | 7 / 8 / 9 | Machine on the service line: less time to react | [card](level-cards/L073.png) |
 | 74 | L074 | Volley Ping-Pong | pattern | Baseline center | S-F [V] -> S-B [V] | 70 km/h | Flat (0 rpm) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L074.png) |
 | 75 | L075 | Approach + Volley | pattern | Baseline center | S-C -> S-B [V] | 70 km/h | Top 1 (+500 rpm) | 6 | B|A | 10 | 6 / 7 / 8 | Start at the baseline: approach, then volley | [card](level-cards/L075.png) |
-| 76 | L076 | First Overhead | pattern | Baseline center · riser ON | M-C (lob) [O] | 70 km/h | Flat (0 rpm) | 8 | A | 10 | 7 / 8 / 9 | Riser on. Point at the ball with your free hand | [card](level-cards/L076.png) |
+| 76 | L076 | First Overhead | same ball | Baseline center · riser ON | M-C (lob) [O] | 70 km/h | Flat (0 rpm) | 8 | A | 10 | 7 / 8 / 9 | Riser on. Point at the ball with your free hand | [card](level-cards/L076.png) |
 | 77 | L077 | Quick Hands Guess | random | Service line center | RANDOM: S-F [V], S-B [V] | 60 km/h | Flat (0 rpm) | 5 | A | 10 | 7 / 8 / 9 | Machine on the service line | [card](level-cards/L077.png) |
 | 78 | L078 | Volley Guess | random | Baseline center | RANDOM: S-FW [V], S-F [V], S-B [V], S-BW [V] | 70 km/h | Flat (0 rpm) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L078.png) |
 | 79 | L079 | Overhead Guess | random | Baseline center · riser ON | RANDOM: M-F (lob) [O], M-C (lob) [O], M-B (lob) [O] | 70 km/h | Flat (0 rpm) | 8 | A | 10 | 7 / 8 / 9 | Riser on. Turn sideways and shuffle | [card](level-cards/L079.png) |
@@ -170,11 +171,11 @@ _Serve +1, return +1, crosscourt battles and match pace._
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 91 | L091 | Serve +1 | same ball | Baseline center | M-F | 80 km/h | Top 1 (+500 rpm) | 8 | B | 10 | 6 / 7 / 8 | Serve first (any box), then hit the machine's ball deep. Only the machine ball counts | [card](level-cards/L091.png) |
 | 92 | L092 | Serve +1 Attack | same ball | Baseline center | S-C | 80 km/h | Top 1 (+500 rpm) | 8 | E / F | 10 | 4 / 5 / 6 | Serve, then attack the short ball into either corner box | [card](level-cards/L092.png) |
-| 93 | L093 | Forehand Battle | same ball | Baseline corner (right on screen) | RANDOM: M-F, M-FW | 90 km/h | Top 2 (+1000 rpm) | 4.5 | C | 10 | 6 / 7 / 8 | Machine in the corner: crosscourt forehand rally | [card](level-cards/L093.png) |
-| 94 | L094 | Backhand Battle | pattern | Baseline corner (left on screen) | RANDOM: M-B, M-BW | 90 km/h | Top 2 (+1000 rpm) | 4.5 | C | 10 | 6 / 7 / 8 | Machine in the corner: crosscourt backhand rally | [card](level-cards/L094.png) |
+| 93 | L093 | Forehand Battle | random | Baseline corner (right on screen) | RANDOM: M-F, M-FW | 90 km/h | Top 2 (+1000 rpm) | 4.5 | C | 10 | 6 / 7 / 8 | Machine in the corner: crosscourt forehand rally | [card](level-cards/L093.png) |
+| 94 | L094 | Backhand Battle | random | Baseline corner (left on screen) | RANDOM: M-B, M-BW | 90 km/h | Top 2 (+1000 rpm) | 4.5 | C | 10 | 6 / 7 / 8 | Machine in the corner: crosscourt backhand rally | [card](level-cards/L094.png) |
 | 95 | L095 | Point Builder | pattern | Baseline center | M-F -> S-C -> S-B [V] | 80 km/h | Top 1 (+500 rpm) | 5 | B|B|A | 10 | 6 / 7 / 8 | Rally, attack the short ball, finish with a volley | [card](level-cards/L095.png) |
 | 96 | L096 | Return +1 Ad | pattern | Baseline center · **Apex stand** | S-BW (S3 Flat) -> M-F (S3 Top 1) | 80 km/h | Mixed (per shot) | 6 | B | 10 | 6 / 7 / 8 | Apex stand. Return from the ad side, then the next ball | [card](level-cards/L096.png) |
-| 97 | L097 | Defend and Turn | random | Baseline center | D-FW -> D-BW -> S-C | 90 km/h | Top 2 (+1000 rpm) | 5 | B | 10 | 6 / 7 / 8 | Two defensive balls, then attack the short one | [card](level-cards/L097.png) |
+| 97 | L097 | Defend and Turn | pattern | Baseline center | D-FW -> D-BW -> S-C | 90 km/h | Top 2 (+1000 rpm) | 5 | B | 10 | 6 / 7 / 8 | Two defensive balls, then attack the short one | [card](level-cards/L097.png) |
 | 98 | L098 | Match Chaos | random | Baseline center | RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-C | 90 km/h | Top 2 (+1000 rpm) | 4.5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L098.png) |
 | 99 | L099 | Heavy Match | random | Behind baseline | RANDOM: D-F (Top 3), D-B (Top 3), M-F (Slice 1), M-B (Slice 1) | 90 km/h | Mixed (per shot) | 5 | B | 10 | 6 / 7 / 8 |  | [card](level-cards/L099.png) |
 | 100 | L100 | **FINAL BOSS: Champion** | boss | Baseline center | RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-F, D-B, S-C | 90 km/h | Mixed (per shot) | 4.5 | B | 30 | 18 / 21 / 24 | 30 balls | [card](level-cards/L100.png) |

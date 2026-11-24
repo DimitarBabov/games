@@ -1,101 +1,101 @@
-level,world,world_name,name,proton_name,shots,speed,spin,interval,speed_kmh,spin_rpm,target,balls,star1,star2,star3,notes,pos,pos_name,stand,riser
-1,1,Rally Rookie,Forehand Start,L001,M-F,S1,Flat,6,60,0,A,10,7,8,9,Forehands only,BC,Baseline center,Off,Off
-2,1,Rally Rookie,Backhand Start,L002,M-B,S1,Flat,6,60,0,A,10,7,8,9,Backhands only,BC,Baseline center,Off,Off
-3,1,Rally Rookie,Backhand Spin-Up,L003,M-B,S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-4,1,Rally Rookie,Ping-Pong,L004,M-F -> M-B,S1,Flat,6,60,0,A,10,7,8,9,Alternate forehand / backhand,BC,Baseline center,Off,Off
-5,1,Rally Rookie,Ping-Pong 2,L005,M-F -> M-B,S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-6,1,Rally Rookie,Two and One,L006,M-F -> M-F -> M-B,S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-7,1,Rally Rookie,First Guess,L007,"RANDOM: M-F, M-B",S1,Flat,6,60,0,A,10,7,8,9,Order random: watch the ball leave the machine,BC,Baseline center,Off,Off
-8,1,Rally Rookie,Guess It,L008,"RANDOM: M-F, M-B",S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-9,1,Rally Rookie,Three-Way Guess,L009,"RANDOM: M-F, M-C, M-B",S2,Top 1,5,70,+500,A,10,7,8,9,Ball at the body: step away,BC,Baseline center,Off,Off
-10,1,Rally Rookie,BOSS: Rookie Rally,L010,"RANDOM: M-F, M-B, D-F, D-B",S2,Top 1,5,70,+500,A,20,14,16,18,20 balls,BC,Baseline center,Off,Off
-11,2,Rally Builder,Faster Forehand,L011,M-F,S3,Top 1,5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-12,2,Rally Builder,Faster Backhand,L012,M-B,S3,Top 1,5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-13,2,Rally Builder,Body Ball,L013,M-C,S3,Top 1,5,80,+500,A,10,7,8,9,"Step away, pick forehand or backhand",BC,Baseline center,Off,Off
-14,2,Rally Builder,Fast Ping-Pong,L014,M-F -> M-B,S3,Top 1,4.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-15,2,Rally Builder,Two Backhands,L015,M-B -> M-B -> M-F,S3,Top 1,4.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-16,2,Rally Builder,Three Spots,L016,M-F -> M-C -> M-B,S3,Top 1,4,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-17,2,Rally Builder,Fast Guess,L017,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-18,2,Rally Builder,Three-Way Fast,L018,"RANDOM: M-F, M-C, M-B",S3,Top 1,4.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-19,2,Rally Builder,Speed Step,L019,"RANDOM: M-F, M-B",S4,Top 1,5,90,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-20,2,Rally Builder,BOSS: Rally Builder,L020,"RANDOM: M-F, M-C, M-B, D-F, D-B",S3,Top 1,4.5,80,+500,A,20,14,16,18,20 balls,BC,Baseline center,Off,Off
-21,3,Deep Zone,Deep Forehand,L021,M-F,S2,Top 1,5,70,+500,B,10,6,7,8,Aim high over the net,BC,Baseline center,Off,Off
-22,3,Deep Zone,Deep Backhand,L022,M-B,S2,Top 1,5,70,+500,B,10,6,7,8,,BC,Baseline center,Off,Off
-23,3,Deep Zone,Heavy Deep Forehand,L023,D-F,S3,Top 2,5,80,+1000,B,10,6,7,8,Machine behind the baseline: start 1 step back,BB,Behind baseline,Off,Off
-24,3,Deep Zone,Deep Ping-Pong,L024,M-F -> M-B,S3,Top 1,5,80,+500,B,10,6,7,8,,BC,Baseline center,Off,Off
-25,3,Deep Zone,Heavy Ping-Pong,L025,D-F -> D-B,S3,Top 2,5,80,+1000,B,10,6,7,8,,BB,Behind baseline,Off,Off
-26,3,Deep Zone,Middle Box Rally,L026,M-F -> M-B,S3,Top 1,5,80,+500,G,10,4,5,6,,BC,Baseline center,Off,Off
-27,3,Deep Zone,Deep Guess,L027,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,B,10,6,7,8,,BC,Baseline center,Off,Off
-28,3,Deep Zone,Heavy Guess,L028,"RANDOM: D-F, D-C, D-B",S3,Top 2,5,80,+1000,B,10,6,7,8,,BB,Behind baseline,Off,Off
-29,3,Deep Zone,Middle Box Guess,L029,"RANDOM: M-F, M-B",S3,Top 1,4.5,80,+500,G,10,4,5,6,,BC,Baseline center,Off,Off
-30,3,Deep Zone,BOSS: Deep Diver,L030,"RANDOM: M-F, M-B, D-F, D-B",S3,Top 2,4.5,80,+1000,B,20,12,14,16,20 balls,BB,Behind baseline,Off,Off
-31,4,Fast Feet,Wide Forehand,L031,M-FW,S2,Top 1,6,70,+500,A,10,7,8,9,Recover to the center mark after every shot,BC,Baseline center,Off,Off
-32,4,Fast Feet,Wide Backhand,L032,M-BW,S2,Top 1,6,70,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off
-33,4,Fast Feet,Short Forehand,L033,S-F,S2,Top 1,6,70,+500,A,10,7,8,9,"Run in, hit, backpedal to the baseline",BC,Baseline center,Off,Off
-34,4,Fast Feet,Side to Side,L034,M-FW -> M-BW,S2,Top 1,6,70,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off
-35,4,Fast Feet,In and Out,L035,S-F -> D-F,S2,Top 1,6,70,+500,A,10,7,8,9,"Run in for the short ball, back for the deep one",BC,Baseline center,Off,Off
-36,4,Fast Feet,Four Corners,L036,M-FW -> S-C -> M-BW -> D-C,S3,Top 1,5.5,80,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off
-37,4,Fast Feet,Wide Guess,L037,"RANDOM: M-FW, M-BW",S3,Top 1,5.5,80,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off
-38,4,Fast Feet,Short or Deep,L038,"RANDOM: S-F, S-B, D-F, D-B",S3,Top 1,5.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off
-39,4,Fast Feet,Five-Way Run,L039,"RANDOM: M-FW, M-F, M-C, M-B, M-BW",S3,Top 1,5,80,+500,B,10,6,7,8,Recover to the center mark,BC,Baseline center,Off,Off
-40,4,Fast Feet,BOSS: Iron Legs,L040,"RANDOM: M-FW, M-BW, S-C, D-F, D-B",S3,Top 1,5,80,+500,B,20,12,14,16,20 balls. Recover to the center mark,BC,Baseline center,Off,Off
-41,5,Aim Master,Forehand Crosscourt,L041,M-F,S3,Top 1,5,80,+500,C,10,6,7,8,Machine in the corner: a real crosscourt rally,CR,Baseline corner (right on screen),Off,Off
-42,5,Aim Master,Backhand Crosscourt,L042,M-B,S3,Top 1,5,80,+500,C,10,6,7,8,Machine in the corner,CL,Baseline corner (left on screen),Off,Off
-43,5,Aim Master,Forehand Corner Box,L043,M-F,S3,Top 1,5,80,+500,E,10,4,5,6,Machine in the corner,CR,Baseline corner (right on screen),Off,Off
-44,5,Aim Master,Crosscourt Ping-Pong,L044,M-F -> M-B,S3,Top 1,5,80,+500,C,10,6,7,8,Both sides crosscourt,BC,Baseline center,Off,Off
-45,5,Aim Master,Switch It,L045,M-F,S3,Top 1,5,80,+500,C / D,10,6,7,8,"Odd balls crosscourt, even balls down the line",BC,Baseline center,Off,Off
-46,5,Aim Master,Cross and Line,L046,M-F -> M-B,S3,Top 1,5,80,+500,C / D,10,6,7,8,"Forehand crosscourt, backhand down the line",BC,Baseline center,Off,Off
-47,5,Aim Master,Crosscourt Guess,L047,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,C,10,6,7,8,Every ball crosscourt,BC,Baseline center,Off,Off
-48,5,Aim Master,Line Guess,L048,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,D,10,6,7,8,Every ball down the line,BC,Baseline center,Off,Off
-49,5,Aim Master,Box Guess,L049,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,E,10,4,5,6,Every ball into the crosscourt box,BC,Baseline center,Off,Off
-50,5,Aim Master,BOSS: Sniper,L050,M-F -> M-B,S3,Top 2,4.5,80,+1000,E / D,20,8,10,12,"20 balls. Odd balls crosscourt box, even balls down the line",BC,Baseline center,Off,Off
-51,6,Spin Lab,Topspin Forehand,L051,M-F,S3,Top 2,5,80,+1000,A,10,7,8,9,"Ball kicks up: move back, hit at waist height",BC,Baseline center,Off,Off
-52,6,Spin Lab,Slice Backhand,L052,M-B,S3,Slice 1,5,80,-500,A,10,7,8,9,Ball stays low: bend your knees,BC,Baseline center,Off,Off
-53,6,Spin Lab,Heavy Forehand,L053,D-F,S3,Top 3,5,80,+2000,A,10,7,8,9,High bouncer: step back or take it early,BB,Behind baseline,Off,Off
-54,6,Spin Lab,Topspin Ping-Pong,L054,M-F -> M-B,S3,Top 2,5,80,+1000,B,10,6,7,8,,BC,Baseline center,Off,Off
-55,6,Spin Lab,Slice Ping-Pong,L055,M-F -> M-B,S3,Slice 1,5,80,-500,A,10,7,8,9,,BC,Baseline center,Off,Off
-56,6,Spin Lab,Spin Switch,L056,M-F (Top 2) -> M-B (Slice 1) -> M-F (Slice 1) -> M-B (Top 2),S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,,BC,Baseline center,Off,Off
-57,6,Spin Lab,Forehand Spin Guess,L057,"RANDOM: M-F (Top 1), M-F (Top 3), M-F (Slice 1)",S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,Forehands only,BC,Baseline center,Off,Off
-58,6,Spin Lab,Backhand Spin Guess,L058,"RANDOM: M-B (Top 1), M-B (Top 3), M-B (Slice 1)",S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,Backhands only,BC,Baseline center,Off,Off
-59,6,Spin Lab,Full Spin Guess,L059,"RANDOM: M-F (Top 1), M-F (Top 3), M-F (Slice 1), M-B (Top 1), M-B (Top 3), M-B (Slice 1)",S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,,BC,Baseline center,Off,Off
-60,6,Spin Lab,BOSS: Spin Doctor,L060,"RANDOM: M-F (Top 3), M-B (Slice 1), D-F (Slice 1), D-B (Top 3), M-C (Top 2)",S3,Mixed (per shot),5,80,per shot,B,20,12,14,16,20 balls,BB,Behind baseline,Off,Off
-61,7,Return of Serve,Deuce Body Serve,L061,S-F,S2,Flat,7,70,0,A,10,7,8,9,Stand on the deuce side. Split step as the machine fires,BC,Baseline center,Apex,Off
-62,7,Return of Serve,Ad Body Serve,L062,S-B,S2,Flat,7,70,0,A,10,7,8,9,Stand on the ad side,BC,Baseline center,Apex,Off
-63,7,Return of Serve,Deuce Wide Serve,L063,S-FW,S2,Flat,7,70,0,A,10,7,8,9,"Short swing, block it back",BC,Baseline center,Apex,Off
-64,7,Return of Serve,Deuce T and Wide,L064,S-C -> S-FW,S2,Flat,7,70,0,A,10,7,8,9,Deuce side,BC,Baseline center,Apex,Off
-65,7,Return of Serve,Ad T and Wide,L065,S-C -> S-BW,S2,Flat,7,70,0,A,10,7,8,9,Ad side,BC,Baseline center,Apex,Off
-66,7,Return of Serve,"Deuce, Ad, Deuce",L066,S-F -> S-B,S3,Flat,8,80,0,B,10,6,7,8,"Switch sides after every return, like a match",BC,Baseline center,Apex,Off
-67,7,Return of Serve,Read the Deuce Serve,L067,"RANDOM: S-FW, S-F, S-C",S3,Flat,7,80,0,B,10,6,7,8,Deuce side,BC,Baseline center,Apex,Off
-68,7,Return of Serve,Read the Ad Serve,L068,"RANDOM: S-C, S-B, S-BW",S3,Flat,7,80,0,B,10,6,7,8,Ad side,BC,Baseline center,Apex,Off
-69,7,Return of Serve,First or Second Serve,L069,"RANDOM: S-FW (S4 Flat), S-C (S4 Flat), S-F (S2 Top 2)",S3,Mixed (per shot),7,80,per shot,C,10,6,7,8,Deuce side. Big serve: block crosscourt. Slow serve: step in,BC,Baseline center,Apex,Off
-70,7,Return of Serve,BOSS: Return +1,L070,S-F (S3 Flat) -> M-B (S3 Top 1),S3,Mixed (per shot),6,80,per shot,B,20,12,14,16,"20 balls. Return, recover to the middle, then hit the next ball",BC,Baseline center,Apex,Off
-71,8,Net Attack,Forehand Volley,L071,S-F [V],S2,Flat,6,70,0,A,10,7,8,9,Stand 2 m from the net. Catch the ball in the air,BC,Baseline center,Off,Off
-72,8,Net Attack,Backhand Volley,L072,S-B [V],S2,Flat,6,70,0,A,10,7,8,9,Stand 2 m from the net,BC,Baseline center,Off,Off
-73,8,Net Attack,Quick Hands,L073,S-F [V],S1,Flat,5,60,0,A,10,7,8,9,Machine on the service line: less time to react,SC,Service line center,Off,Off
-74,8,Net Attack,Volley Ping-Pong,L074,S-F [V] -> S-B [V],S2,Flat,5,70,0,B,10,6,7,8,,BC,Baseline center,Off,Off
-75,8,Net Attack,Approach + Volley,L075,S-C -> S-B [V],S2,Top 1,6,70,+500,B|A,10,6,7,8,"Start at the baseline: approach, then volley",BC,Baseline center,Off,Off
-76,8,Net Attack,First Overhead,L076,M-C (lob) [O],S2,Flat,8,70,0,A,10,7,8,9,Riser on. Point at the ball with your free hand,BC,Baseline center,Off,ON
-77,8,Net Attack,Quick Hands Guess,L077,"RANDOM: S-F [V], S-B [V]",S1,Flat,5,60,0,A,10,7,8,9,Machine on the service line,SC,Service line center,Off,Off
-78,8,Net Attack,Volley Guess,L078,"RANDOM: S-FW [V], S-F [V], S-B [V], S-BW [V]",S2,Flat,5,70,0,B,10,6,7,8,,BC,Baseline center,Off,Off
-79,8,Net Attack,Overhead Guess,L079,"RANDOM: M-F (lob) [O], M-C (lob) [O], M-B (lob) [O]",S2,Flat,8,70,0,A,10,7,8,9,Riser on. Turn sideways and shuffle,BC,Baseline center,Off,ON
-80,8,Net Attack,BOSS: Net Ninja,L080,S-C -> S-F [V] -> S-B [V],S2,Flat,6,70,0,B|A|A,20,12,14,16,"20 balls. Approach, then 2 volleys. Start each pattern at the baseline",BC,Baseline center,Off,Off
-81,9,Pass & Defend,Forehand Pass,L081,D-F,S1,Top 1,5,60,+500,D,10,6,7,8,Machine at the net is the opponent: pass it down the line,NC,Net center,Off,Off
-82,9,Pass & Defend,Backhand Pass,L082,D-B,S1,Top 1,5,60,+500,D,10,6,7,8,Pass down the line,NC,Net center,Off,Off
-83,9,Pass & Defend,First Lob,L083,D-C,S1,Top 1,5,60,+500,B,10,6,7,8,"Lob over the machine, land it deep",NC,Net center,Off,Off
-84,9,Pass & Defend,Pass Ping-Pong,L084,D-F -> D-B,S2,Top 1,5,70,+500,D,10,6,7,8,,NC,Net center,Off,Off
-85,9,Pass & Defend,Cross and Line Pass,L085,D-F -> D-B,S2,Top 1,5,70,+500,C / D,10,6,7,8,"Odd balls crosscourt, even balls down the line",NC,Net center,Off,Off
-86,9,Pass & Defend,"Pass, Pass, Lob",L086,D-F -> D-B -> D-C,S2,Top 1,5,70,+500,D|D|B,10,6,7,8,,NC,Net center,Off,Off
-87,9,Pass & Defend,Pass Guess,L087,"RANDOM: D-F, D-B",S2,Top 1,5,70,+500,D,10,6,7,8,,NC,Net center,Off,Off
-88,9,Pass & Defend,Defend!,L088,"RANDOM: D-FW, D-BW",S3,Top 2,5,80,+1000,B,10,6,7,8,Machine back on the baseline. Hit high and deep to get back in the point,BC,Baseline center,Off,Off
-89,9,Pass & Defend,Pass or Lob,L089,"RANDOM: D-F, D-B, D-C",S2,Top 1,5,70,+500,D|D|B,10,6,7,8,Wide ball: pass. Middle ball: lob,NC,Net center,Off,Off
-90,9,Pass & Defend,BOSS: Passing Pro,L090,"RANDOM: D-FW, D-F, D-C, D-B, D-BW",S2,Top 1,4.5,70,+500,D|D|B|D|D,20,12,14,16,"20 balls. Pass the wide balls, lob the middle one",NC,Net center,Off,Off
-91,10,Match Play,Serve +1,L091,M-F,S3,Top 1,8,80,+500,B,10,6,7,8,"Serve first (any box), then hit the machine's ball deep. Only the machine ball counts",BC,Baseline center,Off,Off
-92,10,Match Play,Serve +1 Attack,L092,S-C,S3,Top 1,8,80,+500,E / F,10,4,5,6,"Serve, then attack the short ball into either corner box",BC,Baseline center,Off,Off
-93,10,Match Play,Forehand Battle,L093,"RANDOM: M-F, M-FW",S4,Top 2,4.5,90,+1000,C,10,6,7,8,Machine in the corner: crosscourt forehand rally,CR,Baseline corner (right on screen),Off,Off
-94,10,Match Play,Backhand Battle,L094,"RANDOM: M-B, M-BW",S4,Top 2,4.5,90,+1000,C,10,6,7,8,Machine in the corner: crosscourt backhand rally,CL,Baseline corner (left on screen),Off,Off
-95,10,Match Play,Point Builder,L095,M-F -> S-C -> S-B [V],S3,Top 1,5,80,+500,B|B|A,10,6,7,8,"Rally, attack the short ball, finish with a volley",BC,Baseline center,Off,Off
-96,10,Match Play,Return +1 Ad,L096,S-BW (S3 Flat) -> M-F (S3 Top 1),S3,Mixed (per shot),6,80,per shot,B,10,6,7,8,"Apex stand. Return from the ad side, then the next ball",BC,Baseline center,Apex,Off
-97,10,Match Play,Defend and Turn,L097,D-FW -> D-BW -> S-C,S4,Top 2,5,90,+1000,B,10,6,7,8,"Two defensive balls, then attack the short one",BC,Baseline center,Off,Off
-98,10,Match Play,Match Chaos,L098,"RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-C",S4,Top 2,4.5,90,+1000,B,10,6,7,8,,BC,Baseline center,Off,Off
-99,10,Match Play,Heavy Match,L099,"RANDOM: D-F (Top 3), D-B (Top 3), M-F (Slice 1), M-B (Slice 1)",S4,Mixed (per shot),5,90,per shot,B,10,6,7,8,,BB,Behind baseline,Off,Off
-100,10,Match Play,FINAL BOSS: Champion,L100,"RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-F, D-B, S-C",S4,Mixed (per shot),4.5,90,per shot,B,30,18,21,24,30 balls,BC,Baseline center,Off,Off
+level,world,world_name,name,proton_name,shots,speed,spin,interval,speed_kmh,spin_rpm,target,balls,star1,star2,star3,notes,pos,pos_name,stand,riser,side,stage,cue
+1,1,Rally Rookie,Forehand Start,L001,M-F,S1,Flat,6,60,0,A,10,7,8,9,Forehands only,BC,Baseline center,Off,Off,FH,same ball,
+2,1,Rally Rookie,Backhand Start,L002,M-B,S1,Flat,6,60,0,A,10,7,8,9,Backhands only,BC,Baseline center,Off,Off,BH,same ball,
+3,1,Rally Rookie,Backhand Spin-Up,L003,M-B,S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,BH,same ball,
+4,1,Rally Rookie,Ping-Pong,L004,M-F -> M-B,S1,Flat,6,60,0,A,10,7,8,9,Alternate forehand / backhand,BC,Baseline center,Off,Off,both,pattern,
+5,1,Rally Rookie,Ping-Pong 2,L005,M-F -> M-B,S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,pattern,
+6,1,Rally Rookie,Two and One,L006,M-F -> M-F -> M-B,S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,pattern,
+7,1,Rally Rookie,First Guess,L007,"RANDOM: M-F, M-B",S1,Flat,6,60,0,A,10,7,8,9,Order random: watch the ball leave the machine,BC,Baseline center,Off,Off,both,random,
+8,1,Rally Rookie,Guess It,L008,"RANDOM: M-F, M-B",S2,Top 1,5,70,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,random,
+9,1,Rally Rookie,Three-Way Guess,L009,"RANDOM: M-F, M-C, M-B",S2,Top 1,5,70,+500,A,10,7,8,9,Ball at the body: step away,BC,Baseline center,Off,Off,both,random,
+10,1,Rally Rookie,BOSS: Rookie Rally,L010,"RANDOM: M-F, M-B, D-F, D-B",S2,Top 1,5,70,+500,A,20,14,16,18,20 balls,BC,Baseline center,Off,Off,both,boss,
+11,2,Rally Builder,Faster Forehand,L011,M-F,S3,Top 1,5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,FH,same ball,
+12,2,Rally Builder,Faster Backhand,L012,M-B,S3,Top 1,5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,BH,same ball,
+13,2,Rally Builder,Body Ball,L013,M-C,S3,Top 1,5,80,+500,A,10,7,8,9,"Step away, pick forehand or backhand",BC,Baseline center,Off,Off,both,same ball,
+14,2,Rally Builder,Fast Ping-Pong,L014,M-F -> M-B,S3,Top 1,4.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,pattern,
+15,2,Rally Builder,Two Backhands,L015,M-B -> M-B -> M-F,S3,Top 1,4.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,pattern,
+16,2,Rally Builder,Three Spots,L016,M-F -> M-C -> M-B,S3,Top 1,4,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,pattern,
+17,2,Rally Builder,Fast Guess,L017,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,random,
+18,2,Rally Builder,Three-Way Fast,L018,"RANDOM: M-F, M-C, M-B",S3,Top 1,4.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,random,
+19,2,Rally Builder,Speed Step,L019,"RANDOM: M-F, M-B",S4,Top 1,5,90,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,random,
+20,2,Rally Builder,BOSS: Rally Builder,L020,"RANDOM: M-F, M-C, M-B, D-F, D-B",S3,Top 1,4.5,80,+500,A,20,14,16,18,20 balls,BC,Baseline center,Off,Off,both,boss,
+21,3,Deep Zone,Deep Forehand,L021,M-F,S2,Top 1,5,70,+500,B,10,6,7,8,Aim high over the net,BC,Baseline center,Off,Off,FH,same ball,
+22,3,Deep Zone,Deep Backhand,L022,M-B,S2,Top 1,5,70,+500,B,10,6,7,8,,BC,Baseline center,Off,Off,BH,same ball,
+23,3,Deep Zone,Heavy Deep Backhand,L023,D-B,S3,Top 2,5,80,+1000,B,10,6,7,8,Machine behind the baseline: start 1 step back,BB,Behind baseline,Off,Off,BH,same ball,
+24,3,Deep Zone,Deep Ping-Pong,L024,M-F -> M-B,S3,Top 1,5,80,+500,B,10,6,7,8,,BC,Baseline center,Off,Off,both,pattern,
+25,3,Deep Zone,Heavy Ping-Pong,L025,D-F -> D-B,S3,Top 2,5,80,+1000,B,10,6,7,8,,BB,Behind baseline,Off,Off,both,pattern,
+26,3,Deep Zone,Middle Box Rally,L026,M-F -> M-B,S3,Top 1,5,80,+500,G,10,4,5,6,,BC,Baseline center,Off,Off,both,pattern,
+27,3,Deep Zone,Deep Guess,L027,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,B,10,6,7,8,,BC,Baseline center,Off,Off,both,random,
+28,3,Deep Zone,Heavy Guess,L028,"RANDOM: D-F, D-C, D-B",S3,Top 2,5,80,+1000,B,10,6,7,8,,BB,Behind baseline,Off,Off,both,random,
+29,3,Deep Zone,Middle Box Guess,L029,"RANDOM: M-F, M-B",S3,Top 1,4.5,80,+500,G,10,4,5,6,,BC,Baseline center,Off,Off,both,random,
+30,3,Deep Zone,BOSS: Deep Diver,L030,"RANDOM: M-F, M-B, D-F, D-B",S3,Top 2,4.5,80,+1000,B,20,12,14,16,20 balls,BB,Behind baseline,Off,Off,both,boss,
+31,4,Fast Feet,Wide Forehand,L031,M-FW,S2,Top 1,6,70,+500,A,10,7,8,9,Recover to the center mark after every shot,BC,Baseline center,Off,Off,FH,same ball,
+32,4,Fast Feet,Wide Backhand,L032,M-BW,S2,Top 1,6,70,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off,BH,same ball,
+33,4,Fast Feet,Short Forehand,L033,S-F,S2,Top 1,6,70,+500,A,10,7,8,9,"Run in, hit, backpedal to the baseline",BC,Baseline center,Off,Off,FH,same ball,
+34,4,Fast Feet,Side to Side,L034,M-FW -> M-BW,S2,Top 1,6,70,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off,both,pattern,
+35,4,Fast Feet,In and Out,L035,S-B -> D-B,S2,Top 1,6,70,+500,A,10,7,8,9,"Backhand side: run in for the short ball, back for the deep one",BC,Baseline center,Off,Off,BH,pattern,
+36,4,Fast Feet,Four Corners,L036,M-FW -> S-C -> M-BW -> D-C,S3,Top 1,5.5,80,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off,both,pattern,
+37,4,Fast Feet,Wide Guess,L037,"RANDOM: M-FW, M-BW",S3,Top 1,5.5,80,+500,A,10,7,8,9,Recover to the center mark,BC,Baseline center,Off,Off,both,random,
+38,4,Fast Feet,Short or Deep,L038,"RANDOM: S-F, S-B, D-F, D-B",S3,Top 1,5.5,80,+500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,random,
+39,4,Fast Feet,Five-Way Run,L039,"RANDOM: M-FW, M-F, M-C, M-B, M-BW",S3,Top 1,5,80,+500,B,10,6,7,8,Recover to the center mark,BC,Baseline center,Off,Off,both,random,
+40,4,Fast Feet,BOSS: Iron Legs,L040,"RANDOM: M-FW, M-BW, S-C, D-F, D-B",S3,Top 1,5,80,+500,B,20,12,14,16,20 balls. Recover to the center mark,BC,Baseline center,Off,Off,both,boss,
+41,5,Aim Master,Forehand Crosscourt,L041,M-F,S3,Top 1,5,80,+500,C,10,6,7,8,Machine in the corner: a real crosscourt rally,CR,Baseline corner (right on screen),Off,Off,FH,same ball,
+42,5,Aim Master,Backhand Crosscourt,L042,M-B,S3,Top 1,5,80,+500,C,10,6,7,8,Machine in the corner,CL,Baseline corner (left on screen),Off,Off,BH,same ball,
+43,5,Aim Master,Backhand Corner Box,L043,M-B,S3,Top 1,5,80,+500,E,10,4,5,6,Machine in the corner,CL,Baseline corner (left on screen),Off,Off,BH,same ball,
+44,5,Aim Master,Crosscourt Ping-Pong,L044,M-F -> M-B,S3,Top 1,5,80,+500,C,10,6,7,8,Both sides crosscourt,BC,Baseline center,Off,Off,both,pattern,
+45,5,Aim Master,Switch It,L045,M-F,S3,Top 1,5,80,+500,C / D,10,6,7,8,"Odd balls crosscourt, even balls down the line",BC,Baseline center,Off,Off,FH,pattern,
+46,5,Aim Master,Cross and Line,L046,M-F -> M-B,S3,Top 1,5,80,+500,C / D,10,6,7,8,"Forehand crosscourt, backhand down the line",BC,Baseline center,Off,Off,both,pattern,
+47,5,Aim Master,Crosscourt Guess,L047,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,C,10,6,7,8,Every ball crosscourt,BC,Baseline center,Off,Off,both,random,
+48,5,Aim Master,Line Guess,L048,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,D,10,6,7,8,Every ball down the line,BC,Baseline center,Off,Off,both,random,
+49,5,Aim Master,Box Guess,L049,"RANDOM: M-F, M-B",S3,Top 1,5,80,+500,E,10,4,5,6,Every ball into the crosscourt box,BC,Baseline center,Off,Off,both,random,
+50,5,Aim Master,BOSS: Sniper,L050,M-F -> M-B,S3,Top 2,4.5,80,+1000,E / D,20,8,10,12,"20 balls. Odd balls crosscourt box, even balls down the line",BC,Baseline center,Off,Off,both,boss,
+51,6,Spin Lab,Topspin Forehand,L051,M-F,S3,Top 2,5,80,+1000,A,10,7,8,9,"Ball kicks up: move back, hit at waist height",BC,Baseline center,Off,Off,FH,same ball,
+52,6,Spin Lab,Slice Backhand,L052,M-B,S3,Slice 1,5,80,-500,A,10,7,8,9,Ball stays low: bend your knees,BC,Baseline center,Off,Off,BH,same ball,
+53,6,Spin Lab,Heavy Backhand,L053,D-B,S3,Top 3,5,80,+2000,A,10,7,8,9,High bouncer to the backhand: step back or take it early,BB,Behind baseline,Off,Off,BH,same ball,
+54,6,Spin Lab,Topspin Ping-Pong,L054,M-F -> M-B,S3,Top 2,5,80,+1000,B,10,6,7,8,,BC,Baseline center,Off,Off,both,pattern,
+55,6,Spin Lab,Slice Ping-Pong,L055,M-F -> M-B,S3,Slice 1,5,80,-500,A,10,7,8,9,,BC,Baseline center,Off,Off,both,pattern,
+56,6,Spin Lab,Spin Switch,L056,M-F (Top 2) -> M-B (Slice 1) -> M-F (Slice 1) -> M-B (Top 2),S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,,BC,Baseline center,Off,Off,both,pattern,
+57,6,Spin Lab,Forehand Spin Guess,L057,"RANDOM: M-F (Top 1), M-F (Top 3), M-F (Slice 1)",S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,Forehands only,BC,Baseline center,Off,Off,FH,random,
+58,6,Spin Lab,Backhand Spin Guess,L058,"RANDOM: M-B (Top 1), M-B (Top 3), M-B (Slice 1)",S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,Backhands only,BC,Baseline center,Off,Off,BH,random,
+59,6,Spin Lab,Full Spin Guess,L059,"RANDOM: M-F (Top 1), M-F (Top 3), M-F (Slice 1), M-B (Top 1), M-B (Top 3), M-B (Slice 1)",S3,Mixed (per shot),5,80,per shot,B,10,6,7,8,,BC,Baseline center,Off,Off,both,random,
+60,6,Spin Lab,BOSS: Spin Doctor,L060,"RANDOM: M-F (Top 3), M-B (Slice 1), D-F (Slice 1), D-B (Top 3), M-C (Top 2)",S3,Mixed (per shot),5,80,per shot,B,20,12,14,16,20 balls,BB,Behind baseline,Off,Off,both,boss,
+61,7,Return of Serve,Deuce Body Serve,L061,S-F,S2,Flat,7,70,0,A,10,7,8,9,Stand on the deuce side. Split step as the machine fires,BC,Baseline center,Apex,Off,deuce,same ball,
+62,7,Return of Serve,Ad Body Serve,L062,S-B,S2,Flat,7,70,0,A,10,7,8,9,Stand on the ad side,BC,Baseline center,Apex,Off,ad,same ball,
+63,7,Return of Serve,Ad Wide Serve,L063,S-BW,S2,Flat,7,70,0,A,10,7,8,9,"Stand on the ad side. Short swing, block it back",BC,Baseline center,Apex,Off,ad,same ball,
+64,7,Return of Serve,Deuce T and Wide,L064,S-C -> S-FW,S2,Flat,7,70,0,A,10,7,8,9,Deuce side,BC,Baseline center,Apex,Off,deuce,pattern,
+65,7,Return of Serve,Ad T and Wide,L065,S-C -> S-BW,S2,Flat,7,70,0,A,10,7,8,9,Ad side,BC,Baseline center,Apex,Off,ad,pattern,
+66,7,Return of Serve,"Deuce, Ad, Deuce",L066,S-F -> S-B,S3,Flat,8,80,0,B,10,6,7,8,"Switch sides after every return, like a match",BC,Baseline center,Apex,Off,both,pattern,
+67,7,Return of Serve,Read the Deuce Serve,L067,"RANDOM: S-FW, S-F, S-C",S3,Flat,7,80,0,B,10,6,7,8,Deuce side,BC,Baseline center,Apex,Off,deuce,random,
+68,7,Return of Serve,Read the Ad Serve,L068,"RANDOM: S-C, S-B, S-BW",S3,Flat,7,80,0,B,10,6,7,8,Ad side,BC,Baseline center,Apex,Off,ad,random,
+69,7,Return of Serve,First or Second Serve,L069,"RANDOM: S-FW (S4 Flat), S-C (S4 Flat), S-F (S2 Top 2)",S3,Mixed (per shot),7,80,per shot,C,10,6,7,8,Deuce side. Big serve: block crosscourt. Slow serve: step in,BC,Baseline center,Apex,Off,deuce,random,
+70,7,Return of Serve,BOSS: Return +1,L070,S-F (S3 Flat) -> M-B (S3 Top 1),S3,Mixed (per shot),6,80,per shot,B,20,12,14,16,"20 balls. Return, recover to the middle, then hit the next ball",BC,Baseline center,Apex,Off,both,boss,
+71,8,Net Attack,Forehand Volley,L071,S-F [V],S2,Flat,6,70,0,A,10,7,8,9,Stand 2 m from the net. Catch the ball in the air,BC,Baseline center,Off,Off,FH,same ball,
+72,8,Net Attack,Backhand Volley,L072,S-B [V],S2,Flat,6,70,0,A,10,7,8,9,Stand 2 m from the net,BC,Baseline center,Off,Off,BH,same ball,
+73,8,Net Attack,Quick Hands,L073,S-F [V],S1,Flat,5,60,0,A,10,7,8,9,Machine on the service line: less time to react,SC,Service line center,Off,Off,FH,same ball,
+74,8,Net Attack,Volley Ping-Pong,L074,S-F [V] -> S-B [V],S2,Flat,5,70,0,B,10,6,7,8,,BC,Baseline center,Off,Off,both,pattern,
+75,8,Net Attack,Approach + Volley,L075,S-C -> S-B [V],S2,Top 1,6,70,+500,B|A,10,6,7,8,"Start at the baseline: approach, then volley",BC,Baseline center,Off,Off,both,pattern,
+76,8,Net Attack,First Overhead,L076,M-C (lob) [O],S2,Flat,8,70,0,A,10,7,8,9,Riser on. Point at the ball with your free hand,BC,Baseline center,Off,ON,both,same ball,
+77,8,Net Attack,Quick Hands Guess,L077,"RANDOM: S-F [V], S-B [V]",S1,Flat,5,60,0,A,10,7,8,9,Machine on the service line,SC,Service line center,Off,Off,both,random,
+78,8,Net Attack,Volley Guess,L078,"RANDOM: S-FW [V], S-F [V], S-B [V], S-BW [V]",S2,Flat,5,70,0,B,10,6,7,8,,BC,Baseline center,Off,Off,both,random,
+79,8,Net Attack,Overhead Guess,L079,"RANDOM: M-F (lob) [O], M-C (lob) [O], M-B (lob) [O]",S2,Flat,8,70,0,A,10,7,8,9,Riser on. Turn sideways and shuffle,BC,Baseline center,Off,ON,both,random,
+80,8,Net Attack,BOSS: Net Ninja,L080,S-C -> S-F [V] -> S-B [V],S2,Flat,6,70,0,B|A|A,20,12,14,16,"20 balls. Approach, then 2 volleys. Start each pattern at the baseline",BC,Baseline center,Off,Off,both,boss,
+81,9,Pass & Defend,Forehand Pass,L081,D-F,S1,Top 1,5,60,+500,D,10,6,7,8,Machine at the net is the opponent: pass it down the line,NC,Net center,Off,Off,FH,same ball,
+82,9,Pass & Defend,Backhand Pass,L082,D-B,S1,Top 1,5,60,+500,D,10,6,7,8,Pass down the line,NC,Net center,Off,Off,BH,same ball,
+83,9,Pass & Defend,First Lob,L083,D-C,S1,Top 1,5,60,+500,B,10,6,7,8,"Lob over the machine, land it deep",NC,Net center,Off,Off,both,same ball,
+84,9,Pass & Defend,Pass Ping-Pong,L084,D-F -> D-B,S2,Top 1,5,70,+500,D,10,6,7,8,,NC,Net center,Off,Off,both,pattern,
+85,9,Pass & Defend,Cross and Line Pass,L085,D-F -> D-B,S2,Top 1,5,70,+500,C / D,10,6,7,8,"Odd balls crosscourt, even balls down the line",NC,Net center,Off,Off,both,pattern,
+86,9,Pass & Defend,"Pass, Pass, Lob",L086,D-F -> D-B -> D-C,S2,Top 1,5,70,+500,D|D|B,10,6,7,8,,NC,Net center,Off,Off,both,pattern,
+87,9,Pass & Defend,Pass Guess,L087,"RANDOM: D-F, D-B",S2,Top 1,5,70,+500,D,10,6,7,8,,NC,Net center,Off,Off,both,random,
+88,9,Pass & Defend,Defend!,L088,"RANDOM: D-FW, D-BW",S3,Top 2,5,80,+1000,B,10,6,7,8,Machine back on the baseline. Hit high and deep to get back in the point,BC,Baseline center,Off,Off,both,random,
+89,9,Pass & Defend,Pass or Lob,L089,"RANDOM: D-F, D-B, D-C",S2,Top 1,5,70,+500,D|D|B,10,6,7,8,Wide ball: pass. Middle ball: lob,NC,Net center,Off,Off,both,random,
+90,9,Pass & Defend,BOSS: Passing Pro,L090,"RANDOM: D-FW, D-F, D-C, D-B, D-BW",S2,Top 1,4.5,70,+500,D|D|B|D|D,20,12,14,16,"20 balls. Pass the wide balls, lob the middle one",NC,Net center,Off,Off,both,boss,
+91,10,Match Play,Serve +1,L091,M-F,S3,Top 1,8,80,+500,B,10,6,7,8,"Serve first (any box), then hit the machine's ball deep. Only the machine ball counts",BC,Baseline center,Off,Off,FH,same ball,
+92,10,Match Play,Serve +1 Attack,L092,S-C,S3,Top 1,8,80,+500,E / F,10,4,5,6,"Serve, then attack the short ball into either corner box",BC,Baseline center,Off,Off,both,same ball,
+93,10,Match Play,Forehand Battle,L093,"RANDOM: M-F, M-FW",S4,Top 2,4.5,90,+1000,C,10,6,7,8,Machine in the corner: crosscourt forehand rally,CR,Baseline corner (right on screen),Off,Off,FH,random,
+94,10,Match Play,Backhand Battle,L094,"RANDOM: M-B, M-BW",S4,Top 2,4.5,90,+1000,C,10,6,7,8,Machine in the corner: crosscourt backhand rally,CL,Baseline corner (left on screen),Off,Off,BH,random,
+95,10,Match Play,Point Builder,L095,M-F -> S-C -> S-B [V],S3,Top 1,5,80,+500,B|B|A,10,6,7,8,"Rally, attack the short ball, finish with a volley",BC,Baseline center,Off,Off,both,pattern,
+96,10,Match Play,Return +1 Ad,L096,S-BW (S3 Flat) -> M-F (S3 Top 1),S3,Mixed (per shot),6,80,per shot,B,10,6,7,8,"Apex stand. Return from the ad side, then the next ball",BC,Baseline center,Apex,Off,ad,pattern,
+97,10,Match Play,Defend and Turn,L097,D-FW -> D-BW -> S-C,S4,Top 2,5,90,+1000,B,10,6,7,8,"Two defensive balls, then attack the short one",BC,Baseline center,Off,Off,both,pattern,
+98,10,Match Play,Match Chaos,L098,"RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-C",S4,Top 2,4.5,90,+1000,B,10,6,7,8,,BC,Baseline center,Off,Off,both,random,
+99,10,Match Play,Heavy Match,L099,"RANDOM: D-F (Top 3), D-B (Top 3), M-F (Slice 1), M-B (Slice 1)",S4,Mixed (per shot),5,90,per shot,B,10,6,7,8,,BB,Behind baseline,Off,Off,both,random,
+100,10,Match Play,FINAL BOSS: Champion,L100,"RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-F, D-B, S-C",S4,Mixed (per shot),4.5,90,per shot,B,30,18,21,24,30 balls,BC,Baseline center,Off,Off,both,boss,

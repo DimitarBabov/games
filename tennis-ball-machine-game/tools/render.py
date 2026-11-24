@@ -306,7 +306,8 @@ def card(row):
     <div class="target"><span class="k">HIT TO</span> {tdesc}</div>
     <div class="stars"><span class="k">STARS</span> {stars}</div>
     {f'<div class="note"><span class="k">RULE</span> {notes}</div>' if notes else ''}
-    <div class="foot">{lefty} Set machine position and stand in the program's <b>Setup</b>.{' Stop the machine after ' + str(balls) + ' balls.' if loops * per_loop != balls else ''}</div>
+    {f'<div class="note cue"><span class="k">COACH</span> {html.escape(row["cue"])}</div>' if row.get("cue") else ''}
+    <div class="foot"><b>Only real swings count.</b> {lefty} Set machine position and stand in the program's <b>Setup</b>.{' Stop the machine after ' + str(balls) + ' balls.' if loops * per_loop != balls else ''}</div>
   </div>
 </section>"""
 
@@ -321,6 +322,7 @@ h1{margin:4px 0 6px;font-size:46px;font-weight:600}
 .sub{font-size:22px;color:#c8d3ea}
 svg{display:block}
 .mach{background:#2c4a7a;padding:12px 34px;font-size:24px}.mach .k{min-width:0;margin-right:10px}.mach .hi{color:#ffe94d}
+.cue{color:#ffe94d}
 .target small{color:#aab6d0;font-size:18px}
 .bar{display:grid;grid-template-columns:repeat(4,1fr);background:#24304b;text-align:center;padding:14px 0}
 .bar span{display:block;font-size:20px;color:#c8d3ea}.bar b{font-size:30px}

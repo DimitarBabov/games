@@ -7,8 +7,10 @@ A 100-level tennis game for the Proton ball machine. There are **10 worlds with 
 | `HOW-TO-PLAY.md` | This file: rules, court map, machine positions, scoring |
 | `LEVELS.md` | All 100 levels with the Proton settings |
 | `level-cards/` + `Level-Cards.pdf` | A picture card for every level, drawn like the Proton app |
+| `quest-map.html` | George's game map: stars, gold levels, badges, unlocks |
 | `simulator.html` | Animated simulator of every level |
 | `coach-intro.html` | Two-minute intro for the coach |
+| `coach-cues.csv` | One technique cue per world, from the coach (prints on the cards and the map) |
 | `levels.csv` | The levels as a spreadsheet (handy while programming the machine) |
 | `progress-tracker.csv` | One row per level: best score, stars, date passed |
 | `session-log.csv` | One row per attempt: the practice diary |
@@ -17,7 +19,7 @@ A 100-level tennis game for the Proton ball machine. There are **10 worlds with 
 
 ## 1. How the game is built (and why)
 
-**The worlds follow the order coaches use with juniors** and cover all five game situations (rallying, approaching/net, passing, returning, serving):
+**The worlds follow the order coaches use with juniors** and cover four of the five game situations: rallying, returning, net play and passing. The fifth, George's own serve, isn't in the game yet (he serves only in levels 91–92, and it isn't scored).
 
 | World | Levels | Name | Focus |
 |---|---|---|---|
@@ -32,7 +34,7 @@ A 100-level tennis game for the Proton ball machine. There are **10 worlds with 
 | 9 | 81–90 | Pass & Defend | Passing shots and lobs (machine at the net as the opponent) |
 | 10 | 91–100 | Match Play | Serve +1, return +1, crosscourt battles, match pace |
 
-**Every world has the same inside structure:**
+**Worlds 1–9 have the same inside structure** (World 10 mixes everything, and level 76 is a same-ball overhead):
 
 | Levels in a world | Stage | Why |
 |---|---|---|
@@ -41,13 +43,21 @@ A 100-level tennis game for the Proton ball machine. There are **10 worlds with 
 | 7–9 | **Random order** | Harder in practice, but carries over to matches |
 | 10 | **Boss**: 20 balls, mixed | The test that opens the next world |
 
+One-sided drills come in pairs: forehand then backhand, or deuce side then ad side. Where there's room for only one extra same-ball level (heavy topspin, the corner box, the wide serve), the backhand or ad side gets it, because that's usually the weaker side.
+
 What this is based on:
-- **Blocked first, random later.** A tennis study found 8–9-year-olds learned forehands best from repeating the same ball, while 10–12-year-olds gained more from random practice (Farrow & Maschette). George is 10, so each world starts blocked and ends random.
+- **Blocked first, random later.** One older, small tennis study found 8–9-year-olds learned forehands best from repeating the same ball, while 10–12-year-olds gained more from random practice (Farrow & Maschette). George is 10, so each world starts blocked and ends random.
 - **Priorities for juniors:** consistency first, then depth, then direction, then spin and power (USPTA and coaching sources).
-- **Five game situations:** junior tactics are taught around serving, returning, rallying, approaching and passing (Louis Cayer, ITF/Tennis Canada).
+- **Five game situations:** junior tactics are taught around serving, returning, rallying, approaching and passing (Louis Cayer, ITF/Tennis Canada). The game covers four of them; serving is missing.
 - **Serve +1 and return +1:** a study of elite juniors found these shots get the least practice time (13% and 18% of training). Worlds 7 and 10 include them.
-- **Right difficulty:** practice works best when it's hard but doable (Challenge Point Framework). We pass a level at about 7 of 10 and adjust with the fast-track and drop-back rules below.
+- **Right difficulty:** practice works best when it's hard but doable (Challenge Point Framework). We pass a level at about 7 of 10 and adjust with the fast-track and drop-back rules below. The 7 of 10 mark is our own choice, not a number from research.
 - **Targets, choices and success:** aiming at a target outside the body (external focus), letting the child choose some of the practice, and building on success all help kids learn (Wulf's OPTIMAL theory). The evidence for children is promising but still limited.
+- **Did it stick?** How well someone does during practice is a poor guide to what they keep (Soderstrom & Bjork). Ten balls is also a small sample, so one pass can be luck. That's why a level only turns **gold** when he passes it again on a later day.
+
+**What this game doesn't do**
+- **A machine isn't an opponent.** The timing is fixed and there's no body to read. One small study found players time their return differently against a machine than against a real server (Carboch et al.). World 7 trains the return stroke, not reading a serve.
+- **It checks where the ball lands, not how he hits it.** Technique belongs to his coach (see "Technique beats score" below).
+- So this is extra practice next to lessons and real points, not a replacement for them.
 
 ---
 
@@ -154,6 +164,13 @@ Program **one world at a time**.
 2. Run the program. **10 balls** (boss 20, final boss 30). The card says when to stop the machine early.
 3. A parent counts balls that land **in the target on the first bounce**. Lines are in. Volleys must be hit before the bounce. On "recover" levels he must get back to the center mark before the next ball, or the shot is out.
 
+### Technique beats score
+
+- **Only real swings count.** A ball that's poked or pushed over just to get it in is out, even if it lands in the target. On volleys, a real swing means a firm punch.
+- If he keeps poking, stop and start the level again. The stopped attempt doesn't count as a try.
+- **Dad keeps score, the coach coaches.** Don't correct his technique during a level. Remind him of the coach's one cue for that world before he starts, and film 10 seconds now and then to show the coach.
+- **Coach cues:** `coach-cues.csv` has one line per world for the coach's cue. Once it's filled in and the files are rebuilt (`tools/`), the cue prints on that world's cards and shows on the map.
+
 ### Stars
 
 | Target | Balls | ★ | ★★ | ★★★ |
@@ -166,7 +183,8 @@ Program **one world at a time**.
 ### Unlocking and adjusting difficulty
 
 - **1 star passes a level** and unlocks the next one.
-- **Fast track:** ★★★ on the first try lets him skip the next level in that world (not the boss).
+- **Fast track:** ★★★ on the first try lets him skip the next level, but only a two-sided one. Forehand-only, backhand-only, deuce-side and ad-side levels can never be skipped, and neither can the boss. So acing the forehand never skips the backhand.
+- **Gold:** a level turns gold when he passes it again on a **later day**, on his **first try** that day. One pass shows he could do it once; gold shows it stuck. The map's 🥇 button picks one gold try for each session.
 - **Drop back:** 3 tries max per level per session. After three misses, play the level before it once and try again another day.
 - A **BOSS** unlocks with **15 stars** from levels 1–9 of that world. Beating it opens the next world.
 - **His choice:** once per session he picks any unlocked level to play.
@@ -189,6 +207,7 @@ Program **one world at a time**.
 | 🧱 **The Wall** | beat World 7 (Return of Serve) |
 | 🥷 **Net Ninja** | beat World 8 |
 | 🏹 **Passing Pro** | beat World 9 |
+| 🥇 **Solid Gold** | turn 10 levels gold |
 | 📅 **Iron Habit** | 3 sessions in one week |
 | 🏆 **Champion** | beat level 100 |
 
@@ -201,7 +220,7 @@ Program **one world at a time**.
 ## 7. A good session (45–60 minutes)
 
 1. **Warm-up (10 min):** jog, shuffles, arm circles, 20 easy balls with no scoring.
-2. **Replay (10 min):** one old level to beat his best.
+2. **Go for gold (10 min):** one level he passed on an earlier day. Only his first try counts for gold (the map's 🥇 button picks the level).
 3. **New levels (20–30 min):** 2–4 levels, water between them.
 4. **His choice (5 min):** any unlocked level.
 5. **Write it down** in `session-log.csv` and `progress-tracker.csv`.
@@ -216,6 +235,8 @@ About **150–250 balls** per session, **2–3 sessions a week**. Stop if anythi
 - [Singles tactics, Louis Cayer (Tennis Canada / ITF)](https://assets.tenniscanada.com/production/TPA/Resources/Singles-tactics-by-Louis-Cayer-2005.pdf)
 - [USPTA: Six General Performance Components](https://www.uspta.com/Backup/Education/Resources/Six_General_Performance_Components.aspx)
 - [ITF Coaching & Sport Science Review (third and fourth shot practice)](https://itfcoachingreview.com/index.php/journal/article/download/567/1573/2428)
+- [Soderstrom & Bjork (2015), learning versus performance](https://pubmed.ncbi.nlm.nih.gov/25910388/)
+- [Carboch et al. (2014), ball machine versus real server](https://pmc.ncbi.nlm.nih.gov/articles/PMC3990883)
 - [Challenge Point Framework](https://en.wikipedia.org/wiki/Challenge_point_framework)
 - [OPTIMAL theory in children, Scientific Reports 2024](https://link.springer.com/article/10.1038/s41598-024-63387-z)
 - [ITF Tennis Play and Stay](https://www.itftennis.com/en/growing-the-game/itf-tennis-play-and-stay/)

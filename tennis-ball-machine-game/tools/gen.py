@@ -60,7 +60,7 @@ L = [
  # ---- World 3: Deep Zone (depth, B / G) ----
  ("Deep Forehand", "M-F", "S2", "Top 1", 5, "B", "Aim high over the net", "BC", "Off"),
  ("Deep Backhand", "M-B", "S2", "Top 1", 5, "B", "", "BC", "Off"),
- ("Heavy Deep Forehand", "D-F", "S3", "Top 2", 5, "B", "Machine behind the baseline: start 1 step back", "BB", "Off"),
+ ("Heavy Deep Backhand", "D-B", "S3", "Top 2", 5, "B", "Machine behind the baseline: start 1 step back", "BB", "Off"),
  ("Deep Ping-Pong", "M-F -> M-B", "S3", "Top 1", 5, "B", "", "BC", "Off"),
  ("Heavy Ping-Pong", "D-F -> D-B", "S3", "Top 2", 5, "B", "", "BB", "Off"),
  ("Middle Box Rally", "M-F -> M-B", "S3", "Top 1", 5, "G", "", "BC", "Off"),
@@ -73,7 +73,7 @@ L = [
  ("Wide Backhand", "M-BW", "S2", "Top 1", 6, "A", "Recover to the center mark", "BC", "Off"),
  ("Short Forehand", "S-F", "S2", "Top 1", 6, "A", "Run in, hit, backpedal to the baseline", "BC", "Off"),
  ("Side to Side", "M-FW -> M-BW", "S2", "Top 1", 6, "A", "Recover to the center mark", "BC", "Off"),
- ("In and Out", "S-F -> D-F", "S2", "Top 1", 6, "A", "Run in for the short ball, back for the deep one", "BC", "Off"),
+ ("In and Out", "S-B -> D-B", "S2", "Top 1", 6, "A", "Backhand side: run in for the short ball, back for the deep one", "BC", "Off"),
  ("Four Corners", "M-FW -> S-C -> M-BW -> D-C", "S3", "Top 1", 5.5, "A", "Recover to the center mark", "BC", "Off"),
  ("Wide Guess", "RANDOM: M-FW, M-BW", "S3", "Top 1", 5.5, "A", "Recover to the center mark", "BC", "Off"),
  ("Short or Deep", "RANDOM: S-F, S-B, D-F, D-B", "S3", "Top 1", 5.5, "A", "", "BC", "Off"),
@@ -82,7 +82,7 @@ L = [
  # ---- World 5: Aim Master (direction) ----
  ("Forehand Crosscourt", "M-F", "S3", "Top 1", 5, "C", "Machine in the corner: a real crosscourt rally", "CR", "Off"),
  ("Backhand Crosscourt", "M-B", "S3", "Top 1", 5, "C", "Machine in the corner", "CL", "Off"),
- ("Forehand Corner Box", "M-F", "S3", "Top 1", 5, "E", "Machine in the corner", "CR", "Off"),
+ ("Backhand Corner Box", "M-B", "S3", "Top 1", 5, "E", "Machine in the corner", "CL", "Off"),
  ("Crosscourt Ping-Pong", "M-F -> M-B", "S3", "Top 1", 5, "C", "Both sides crosscourt", "BC", "Off"),
  ("Switch It", "M-F", "S3", "Top 1", 5, "C / D", "Odd balls crosscourt, even balls down the line", "BC", "Off"),
  ("Cross and Line", "M-F -> M-B", "S3", "Top 1", 5, "C / D", "Forehand crosscourt, backhand down the line", "BC", "Off"),
@@ -93,7 +93,7 @@ L = [
  # ---- World 6: Spin Lab ----
  ("Topspin Forehand", "M-F", "S3", "Top 2", 5, "A", "Ball kicks up: move back, hit at waist height", "BC", "Off"),
  ("Slice Backhand", "M-B", "S3", "Slice 1", 5, "A", "Ball stays low: bend your knees", "BC", "Off"),
- ("Heavy Forehand", "D-F", "S3", "Top 3", 5, "A", "High bouncer: step back or take it early", "BB", "Off"),
+ ("Heavy Backhand", "D-B", "S3", "Top 3", 5, "A", "High bouncer to the backhand: step back or take it early", "BB", "Off"),
  ("Topspin Ping-Pong", "M-F -> M-B", "S3", "Top 2", 5, "B", "", "BC", "Off"),
  ("Slice Ping-Pong", "M-F -> M-B", "S3", "Slice 1", 5, "A", "", "BC", "Off"),
  ("Spin Switch", "M-F (Top 2) -> M-B (Slice 1) -> M-F (Slice 1) -> M-B (Top 2)", "S3", "Mixed (per shot)", 5, "B", "", "BC", "Off"),
@@ -104,7 +104,7 @@ L = [
  # ---- World 7: Return of Serve (Apex stand) ----
  ("Deuce Body Serve", "S-F", "S2", "Flat", 7, "A", "Stand on the deuce side. Split step as the machine fires", "BC", "Apex"),
  ("Ad Body Serve", "S-B", "S2", "Flat", 7, "A", "Stand on the ad side", "BC", "Apex"),
- ("Deuce Wide Serve", "S-FW", "S2", "Flat", 7, "A", "Short swing, block it back", "BC", "Apex"),
+ ("Ad Wide Serve", "S-BW", "S2", "Flat", 7, "A", "Stand on the ad side. Short swing, block it back", "BC", "Apex"),
  ("Deuce T and Wide", "S-C -> S-FW", "S2", "Flat", 7, "A", "Deuce side", "BC", "Apex"),
  ("Ad T and Wide", "S-C -> S-BW", "S2", "Flat", 7, "A", "Ad side", "BC", "Apex"),
  ("Deuce, Ad, Deuce", "S-F -> S-B", "S3", "Flat", 8, "B", "Switch sides after every return, like a match", "BC", "Apex"),
@@ -165,6 +165,40 @@ def marks(n, target):
     return balls, tuple(b * k for b in base)
 
 
+import re
+# Which side a level trains. Fast track only ever skips two-sided levels (side == "both").
+SIDE = {61: "deuce", 62: "ad", 63: "ad", 64: "deuce", 65: "ad", 67: "deuce", 68: "ad", 69: "deuce", 96: "ad"}
+
+
+def side_of(n, shots):
+    if n in SIDE:
+        return SIDE[n]
+    lanes = set(re.findall(r"[SMD]-(BW|FW|B|F|C)", shots))
+    if lanes <= {"F", "FW"}:
+        return "FH"
+    if lanes <= {"B", "BW"}:
+        return "BH"
+    return "both"
+
+
+def stage_of(n, shots, target):
+    if n % 10 == 0:
+        return "boss"
+    if shots.startswith("RANDOM"):
+        return "random"
+    alt = "/" in target and {p.strip() for p in target.split("/")} != {"E", "F"}
+    return "pattern" if ("->" in shots or alt) else "same ball"
+
+
+# One technique cue per world, from the coach. Edit coach-cues.csv and re-run; cues print on the cards and the map.
+CUE_FILE = os.path.join(OUT, "coach-cues.csv")
+if not os.path.exists(CUE_FILE):
+    with open(CUE_FILE, "w", newline="") as f:
+        w = csv.writer(f); w.writerow(["world", "world_name", "focus", "cue"])
+        for k, (wn, focus, _) in WORLDS.items():
+            w.writerow([k, wn, focus, ""])
+CUES = {int(r["world"]): r["cue"].strip() for r in csv.DictReader(open(CUE_FILE))}
+
 rows = []
 for i, (name, shots, speed, spin, delay, target, rule, pos, stand) in enumerate(L, 1):
     world = (i - 1) // 10 + 1
@@ -173,10 +207,8 @@ for i, (name, shots, speed, spin, delay, target, rule, pos, stand) in enumerate(
     rows.append(dict(level=i, world=world, world_name=WORLDS[world][0], name=name, proton_name=f"L{i:03d}",
                      shots=shots, speed=speed, spin=spin, interval=delay, speed_kmh=SPEED[speed],
                      spin_rpm=SPINV.get(spin, "per shot"), target=target, balls=balls,
-                     star1=s1, star2=s2, star3=s3, notes=rule, pos=pos, pos_name=POS[pos], stand=stand, riser=riser))
-
-STAGE = {1: "same ball", 2: "same ball", 3: "same ball", 4: "pattern", 5: "pattern", 6: "pattern",
-         7: "random", 8: "random", 9: "random", 0: "boss"}
+                     star1=s1, star2=s2, star3=s3, notes=rule, pos=pos, pos_name=POS[pos], stand=stand, riser=riser,
+                     side=side_of(i, shots), stage=stage_of(i, shots, target), cue=CUES.get(world, "")))
 
 md = ["# All 100 Levels", "",
       "See **HOW-TO-PLAY.md** for the court map, target zones and machine positions.", "",
@@ -185,7 +217,8 @@ md = ["# All 100 Levels", "",
       "- **Shots**: `->` play in this order; `RANDOM:` set Order to random. `[V]` volley, `[O]` overhead. `(lob)` = riser on.",
       "- **Target**: `C / D` = odd balls C, even balls D. `D|D|B` = one target per shot, in the order listed.",
       "- **Card**: a picture of the level drawn like the Proton app (all cards are also in `Level-Cards.pdf`).",
-      "- Inside every world: levels 1–3 repeat the **same ball**, 4–6 are fixed **patterns**, 7–9 are **random**, 10 is the **boss**.", ""]
+      "- **Stage**: worlds 1–9 go from the **same ball**, to fixed **patterns**, to **random** order, then the **boss**. World 10 mixes everything.",
+      "- One-sided drills come in forehand / backhand (or deuce / ad) pairs. Fast track never skips a one-sided level.", ""]
 for w in range(1, 11):
     wn, focus, wd = WORLDS[w]
     md += [f"## World {w}: {wn} · {focus}", "", f"_{wd}_", "",
@@ -195,7 +228,7 @@ for w in range(1, 11):
         mach = r["pos_name"] + ("" if r["stand"] == "Off" else f" · **{r['stand']} stand**") + (" · riser ON" if r["riser"] == "ON" else "")
         nm = "**" + r["name"] + "**" if r["level"] % 10 == 0 else r["name"]
         sp = r["spin"] + ("" if r["spin_rpm"] == "per shot" else f" ({r['spin_rpm']} rpm)")
-        md.append(f"| {r['level']} | {r['proton_name']} | {nm} | {STAGE[r['level'] % 10]} | {mach} | {r['shots']} | {r['speed_kmh']} km/h | {sp} | {r['interval']} | {r['target']} | {r['balls']} | {r['star1']} / {r['star2']} / {r['star3']} | {r['notes']} | [card](level-cards/{r['proton_name']}.png) |")
+        md.append(f"| {r['level']} | {r['proton_name']} | {nm} | {r['stage']} | {mach} | {r['shots']} | {r['speed_kmh']} km/h | {sp} | {r['interval']} | {r['target']} | {r['balls']} | {r['star1']} / {r['star2']} / {r['star3']} | {r['notes']} | [card](level-cards/{r['proton_name']}.png) |")
     md.append("")
 open(os.path.join(OUT, "LEVELS.md"), "w").write("\n".join(md))
 
@@ -206,10 +239,10 @@ with open(os.path.join(OUT, "levels.csv"), "w", newline="") as f:
 with open(os.path.join(OUT, "progress-tracker.csv"), "w", newline="") as f:
     w = csv.writer(f)
     w.writerow(["Level", "World", "Name", "Machine", "Target", "Balls", "1 star", "2 stars", "3 stars",
-                "Best score", "Best stars", "Attempts", "Date first passed", "Saved in Proton app (Y/N)"])
+                "Best score", "Best stars", "Attempts", "Date first passed", "Gold (date passed again, first try)", "Saved in Proton app (Y/N)"])
     for r in rows:
         w.writerow([r["level"], r["world"], r["name"], r["pos_name"] + ("" if r["stand"] == "Off" else f" + {r['stand']} stand"),
-                    r["target"], r["balls"], r["star1"], r["star2"], r["star3"], "", "", "", "", ""])
+                    r["target"], r["balls"], r["star1"], r["star2"], r["star3"], "", "", "", "", "", ""])
 
 with open(os.path.join(OUT, "session-log.csv"), "w", newline="") as f:
     w = csv.writer(f)
