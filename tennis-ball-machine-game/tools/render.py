@@ -57,7 +57,9 @@ def scale_at(t):
 
 
 # ---------- parsing ----------
-SHOT_RE = re.compile(r"^([SMD])-(BW|B|C|FW|F)(?:\s*\((.*?)\))?$")
+SHOT_RE = re.compile(r"^([SMD])-(BW|B|C|FW|F)(?:\s*\(([^)]*)\))?(?:\s*\[(V|O|G)\])?$")
+POS_UT = {"BC": (0.5, 1.0), "BB": (0.5, 1.075), "CL": (0.02, 1.0), "CR": (0.98, 1.0), "SC": (0.5, 1 - 6.40 / 23.77), "NC": (0.5, 0.565)}
+HIT_WORD = {"V": " volley", "O": " overhead", "G": ""}
 
 
 def parse(row):
@@ -74,18 +76,23 @@ def parse(row):
     for i, tok in enumerate(toks):
         m = SHOT_RE.match(tok)
         assert m, (row["level"], tok)
-        depth, lane, extra = m.groups()
-        spin, riser = row["spin"], False
-        if extra in ("lob",):
-            riser, spin = True, "Flat"
-        elif extra == "high":
-            riser, spin = True, "Top 2"
-        elif extra:
-            spin = extra
+        depth, lane, extra, hit = m.groups()
+        spin, riser, speed = row["spin"], False, SPEED[row["speed"]]
+        if extra:
+            e = extra.strip()
+            mm = re.match(r"(S\d)\s*(.*)$", e)
+            if mm:
+                speed, e = SPEED[mm.group(1)], mm.group(2).strip()
+            if e == "lob":
+                riser, spin, hit = True, "Flat", hit or "O"
+            elif e == "high":
+                riser, spin = True, "Top 2"
+            elif e:
+                spin = e
         if spin.startswith("Mixed"):
             spin = MIX_CYCLE[i % len(MIX_CYCLE)]
-        shots.append(dict(depth=depth, lane=lane, spin=spin, riser=riser,
-                          speed=SPEED[row["speed"]], interval=float(row["interval"])))
+        shots.append(dict(depth=depth, lane=lane, spin=spin, riser=riser, hit=hit or "G",
+                          speed=speed, interval=float(row["interval"])))
     return rnd, shots
 
 
@@ -137,7 +144,11 @@ ZONE_COL = ["#ffe94d", "#7fd3ff"]
 def draw_targets(target, shots, rnd):
     parts = [p.strip() for p in target.split("/")]
     groups = []  # (letter, shots for it, colour index, label override)
-    if len(parts) == 1:
+    if "|" in target:
+        per = [p.strip() for p in target.split("|")]
+        letters = [x for x in dict.fromkeys(per) if not (x == "A" and len(set(per)) > 1)]
+        groups = [(lt, [shots[i] for i, p in enumerate(per) if p == lt], k % 2, None) for k, lt in enumerate(letters)]
+    elif len(parts) == 1:
         groups = [(parts[0], shots, 0, None)]
     elif "A" in parts:
         other = [p for p in parts if p != "A"][0]
@@ -180,11 +191,11 @@ def card(row):
     balls = int(row["balls"])
     per_loop = len(shots)
     loops = max(1, math.ceil(balls / per_loop))
-    riser_any = any(s["riser"] for s in shots)
+    riser_any = row["riser"] == "ON"
 
     svg = []
     # court surface
-    svg.append(rect_uv(-0.04, 1.04, -0.03, 1.03, fill="#57b97c"))
+    svg.append(rect_uv(-0.04, 1.04, -0.03, 1.1, fill="#57b97c"))
     svg.append(draw_targets(row["target"], shots, rnd))
     # lines (singles)
     for a, b in [((0, 0), (1, 0)), ((0, 1), (1, 1)), ((0, 0), (0, 1)), ((1, 0), (1, 1))]:
@@ -221,9 +232,16 @@ def card(row):
         lab = "?" if rnd else ",".join(map(str, idx))
         fs = 26 if len(lab) < 4 else 20
         svg.append(f'<text x="{x:.1f}" y="{y + fs * 0.36:.1f}" text-anchor="middle" font-size="{fs}" font-weight="800" fill="#1f2a44">{lab}</text>')
-    # machine
-    mx, my = P(0.5, 1)
-    svg.append(f'<g transform="translate({mx:.1f},{my:.1f})"><path d="M-36,-34 L36,-34 L26,-14 L-26,-14Z" fill="#2c4a7a"/>'
+    # machine at its position, with stand
+    mu, mt = POS_UT[row["pos"]]
+    mx, my = P(mu, mt)
+    k = scale_at(min(mt, 1.0)) * 1.15
+    lift = {"Off": 0, "Mini": 26, "Apex": 70}[row["stand"]] * k
+    if lift:
+        svg.append(f'<rect x="{mx - 4 * k:.1f}" y="{my - lift:.1f}" width="{8 * k:.1f}" height="{lift:.1f}" fill="#c8d3ea"/>'
+                   f'<path d="M{mx - 26 * k:.1f},{my + 4:.1f} L{mx:.1f},{my - 10 * k:.1f} L{mx + 26 * k:.1f},{my + 4:.1f}" stroke="#c8d3ea" stroke-width="{5 * k:.1f}" fill="none"/>')
+    svg.append(f'<ellipse cx="{mx:.1f}" cy="{my + 4:.1f}" rx="{34 * k:.1f}" ry="{9 * k:.1f}" fill="#000" opacity=".25"/>'
+               f'<g transform="translate({mx:.1f},{my - lift - 40 * k:.1f}) scale({k:.3f})"><path d="M-36,-34 L36,-34 L26,-14 L-26,-14Z" fill="#2c4a7a"/>'
                f'<rect x="-20" y="-16" width="40" height="64" rx="6" fill="#111"/><circle cx="0" cy="4" r="7" fill="#555"/><circle cx="0" cy="26" r="9" fill="#333" stroke="#777"/></g>')
     # side labels
     fx, fy = P(0.08, -0.02)
@@ -232,27 +250,34 @@ def card(row):
                f'<text x="{bx:.1f}" y="{by - 14:.1f}" text-anchor="middle" font-size="22" fill="#c8d3ea">backhand side</text>')
     cxm, cym = P(0.5, -0.02)
     svg.append(f'<text x="{cxm:.1f}" y="{cym - 14:.1f}" text-anchor="middle" font-size="22" fill="#c8d3ea">▲ player</text>')
-    court_h = P(0.5, 1)[1] + 70
+    court_h = P(0.5, 1.1)[1] + 24
 
     # shot list
     list_rows = []
     show = shots if len(shots) <= 6 or not rnd else shots
     for i, s in enumerate(show, 1):
         where = f'{ROW_NAME[s["depth"]]}, {COL_NAME[s["lane"]]} from left'
-        riser = " · Riser ON" if s["riser"] else ""
+        riser = ""
         list_rows.append(
             f'<div class="shot"><div class="num">{"?" if rnd else i}</div>'
-            f'<div class="where"><b>{s["depth"]}-{s["lane"]}</b> <span>{LANE_WORD[s["lane"]]}</span><small>{where}</small></div>'
+            f'<div class="where"><b>{s["depth"]}-{s["lane"]}</b> <span>{LANE_WORD[s["lane"]]}{HIT_WORD[s["hit"]]}</span><small>{where}</small></div>'
             f'<div class="vals"><b>{s["speed"]} km/h</b><small>{spin_txt(s["spin"])}{riser}</small><small>delay {s["interval"]:g} s</small></div></div>')
     if row["shots"] == "RANDOM: all 15 spots":
         list_rows = [f'<div class="shot"><div class="num">?</div><div class="where"><b>All 15 spots</b><small>add one shot per circle; spins rotate +500 / +1000 / −500 / +2000 rpm</small></div>'
                      f'<div class="vals"><b>{SPEED[row["speed"]]} km/h</b><small>delay {float(row["interval"]):g} s</small></div></div>']
 
-    parts = [p.strip() for p in row["target"].split("/")]
-    tdesc = " &nbsp;/&nbsp; ".join(
-        f'<span style="color:{ZONE_COL[i % 2]}">■</span> <b>{p}</b> {TARGET_TEXT[p]}' for i, p in enumerate(parts))
+    if "|" in row["target"]:
+        per = [p.strip() for p in row["target"].split("|")]
+        letters = list(dict.fromkeys(per))
+        tdesc = " &nbsp;/&nbsp; ".join(
+            f'<span style="color:{ZONE_COL[(k if not (lt == "A" and len(letters) > 1) else 1) % 2]}">■</span> <b>{lt}</b> {TARGET_TEXT[lt]} <small>({", ".join(shots[i]["depth"] + "-" + shots[i]["lane"] for i, p in enumerate(per) if p == lt)})</small>'
+            for k, lt in enumerate(letters))
+    else:
+        parts = [p.strip() for p in row["target"].split("/")]
+        tdesc = " &nbsp;/&nbsp; ".join(
+            f'<span style="color:{ZONE_COL[i % 2]}">■</span> <b>{p}</b> {TARGET_TEXT[p]}' for i, p in enumerate(parts))
     notes = html.escape(row["notes"]) if row["notes"] else ""
-    lefty = "Left-handed? Tap <b>Mirror</b>."
+    lefty = "Left-handed? Tap <b>Mirror</b>" + (" and put the machine in the other corner." if row["pos"] in ("CL", "CR") else ".")
     stars = f'★ {row["star1"]} &nbsp; ★★ {row["star2"]} &nbsp; ★★★ {row["star3"]} <small>of {balls}</small>'
 
     return f"""
@@ -269,6 +294,7 @@ def card(row):
     </defs>
     {''.join(svg)}
   </svg>
+  <div class="mach"><span class="k">MACHINE</span> <b>{html.escape(row['pos_name'])}</b> · {'<b class="hi">Apex stand</b>' if row['stand'] == 'Apex' else row['stand'] + ' stand' if row['stand'] == 'Mini' else 'Stand Off'}</div>
   <div class="bar">
     <div><span>Loops</span><b>{loops}</b></div>
     <div><span>Order</span><b>{'Random 🔀' if rnd else 'In order ➜'}</b></div>
@@ -280,7 +306,7 @@ def card(row):
     <div class="target"><span class="k">HIT TO</span> {tdesc}</div>
     <div class="stars"><span class="k">STARS</span> {stars}</div>
     {f'<div class="note"><span class="k">RULE</span> {notes}</div>' if notes else ''}
-    <div class="foot">{lefty} Proton location: baseline center · Stand Off.{' Stop the machine after ' + str(balls) + ' balls.' if loops * per_loop != balls else ''}</div>
+    <div class="foot">{lefty} Set machine position and stand in the program's <b>Setup</b>.{' Stop the machine after ' + str(balls) + ' balls.' if loops * per_loop != balls else ''}</div>
   </div>
 </section>"""
 
@@ -294,6 +320,8 @@ header{padding:26px 34px 18px;background:#24304b}
 h1{margin:4px 0 6px;font-size:46px;font-weight:600}
 .sub{font-size:22px;color:#c8d3ea}
 svg{display:block}
+.mach{background:#2c4a7a;padding:12px 34px;font-size:24px}.mach .k{min-width:0;margin-right:10px}.mach .hi{color:#ffe94d}
+.target small{color:#aab6d0;font-size:18px}
 .bar{display:grid;grid-template-columns:repeat(4,1fr);background:#24304b;text-align:center;padding:14px 0}
 .bar span{display:block;font-size:20px;color:#c8d3ea}.bar b{font-size:30px}
 .shots{padding:18px 34px 4px}
