@@ -128,12 +128,14 @@ Set these in each program's **Setup** (Machine Config) in the Proton app. The ca
 
 | Step | Proton app speed |
 |---|---|
-| **S1** | 60 km/h (lowest) |
+| **S1** | 65 km/h |
 | **S2** | 70 km/h |
 | **S3** | 80 km/h |
 | **S4** | 90 km/h |
 
-Shots closer to him (service line, net) feel much faster at the same km/h, so those levels use S1–S2. A shot written `S-FW (S4 Flat)` has its own speed and spin.
+Shots closer to him (service line, net) feel much faster at the same km/h, so those levels use S1–S2. A shot written `S-FW (S4 Flat)` or `D-F (75 Top 1)` has its own speed and spin.
+
+The app's lowest speed, 60 km/h, is not used from the baseline: a flat 60 km/h ball can't reach the middle row.
 
 ### Spin
 
@@ -155,6 +157,20 @@ Seconds before each ball, the same as the app's Delay slider. Return levels use 
 4. Set **Loops** and **Order** from the card.
 
 Program **one world at a time**.
+
+### If the app says "Spin/Speed combo cannot hit target"
+
+The machine can only tilt so far, and the ball must clear the net. So each target has a range of speeds that work:
+
+| From baseline center, on the ground | Middle row | Back row |
+|---|---|---|
+| Flat or topspin | 65–90 km/h | 70–105 km/h |
+| −500 rpm backspin | 60–85 km/h | 65–100 km/h |
+
+- **Too slow** (deep target): raise Speed one notch (5 km/h) at a time until the banner goes away.
+- **Too fast** (the ball would fly long or hit the net): lower Speed, or add topspin.
+- These ranges come from a ball-flight model fitted to readings from the app (`tools/reach/`). It reproduces the app's numbers for the middle row. The back-row numbers are estimates.
+- **61 levels are inside these ranges.** The other 39 are marked **⚠ unchecked** on their cards and in `LEVELS.md`: front-row targets (levels 33, 35, 36, 38, 40, 71, 72, 74, 75, 78, 80, 92, 95, 97, 100), the service-line and net positions (73, 77, 81–87, 89, 90), the Apex stand (61–70, 96) and the riser (76, 79). Their speeds may need changing once we have app readings for them.
 
 ---
 

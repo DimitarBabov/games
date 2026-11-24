@@ -418,6 +418,7 @@ function renderPanel(){
     <div><span class="k">HIT TO</span>${hitTo(L)}</div>
     <div class="starline"><span class="k">STARS</span>★ ${L.stars[0]} &nbsp; ★★ ${L.stars[1]} &nbsp; ★★★ ${L.stars[2]} <small>of ${L.balls}</small></div>
     ${L.notes?`<div><span class="k">RULE</span>${L.notes}</div>`:""}
+    ${L.check==="unchecked"?`<div style="color:#f6a05c">⚠ Not checked in the Proton app yet. If it says “cannot hit target”, change Speed one notch at a time.</div>`:""}
     <div class="foot">${st.mirror?"Lefty view: tap <b>Mirror</b> on this program in the Proton app.":"Left-handed? Tap <b>Mirror</b> in the app (and the Lefty button here)."} ${L.pos==="CL"||L.pos==="CR"?"Lefty: put the machine in the other corner. ":""}Set machine position and stand in the program's <b>Setup</b>.${loops*L.shots.length!==L.balls?` Stop the machine after ${L.balls} balls.`:""}</div>
   </div>`;
 }

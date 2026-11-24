@@ -12,7 +12,7 @@ for r in csv.DictReader(open(os.path.join(GAME, "levels.csv"))):
                riser=s["riser"], hit=s["hit"]) for s in shots]
     out.append(dict(n=int(r["level"]), world=int(r["world"]), name=r["name"], save=r["proton_name"], shots=js, random=rnd,
                     target=r["target"], balls=int(r["balls"]), stars=[int(r["star1"]), int(r["star2"]), int(r["star3"])],
-                    notes=r["notes"], pos=r["pos"], posName=r["pos_name"], stand=r["stand"], riser=r["riser"] == "ON"))
+                    notes=r["notes"], pos=r["pos"], posName=r["pos_name"], stand=r["stand"], riser=r["riser"] == "ON", check=r["check"]))
 html = open(os.path.join(HERE, "sim_template.html")).read()
 open(os.path.join(GAME, "simulator.html"), "w").write(html.replace("/*__DATA__*/", json.dumps(out, separators=(",", ":"), ensure_ascii=False)))
 print(len(out))

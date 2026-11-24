@@ -4,7 +4,7 @@ usage: python3 gen.py <game_dir>
 Shot notation
   D-F            depth (S/M/D) + lane (FW/F/C/B/BW) of the Proton circle
   M-F (Top 2)    per-shot spin
-  S-FW (S4 Flat) per-shot speed and spin
+  S-FW (S4 Flat) per-shot speed and spin;  D-F (75 Top 1) = per-shot speed in km/h
   M-C (lob)      lob (riser ON for the whole program); (high) = high topspin ball
   S-F [V]        how George plays it: [V] volley, [O] overhead, default groundstroke
   a -> b         fixed order;  RANDOM: a, b   = Order random
@@ -45,7 +45,7 @@ L = [
  ("First Guess", "RANDOM: M-F, M-B", "S1", "Flat", 6, "A", "Order random: watch the ball leave the machine", "BC", "Off"),
  ("Guess It", "RANDOM: M-F, M-B", "S2", "Top 1", 5, "A", "", "BC", "Off"),
  ("Three-Way Guess", "RANDOM: M-F, M-C, M-B", "S2", "Top 1", 5, "A", "Ball at the body: step away", "BC", "Off"),
- ("BOSS: Rookie Rally", "RANDOM: M-F, M-B, D-F, D-B", "S2", "Top 1", 5, "A", "20 balls", "BC", "Off"),
+ ("BOSS: Rookie Rally", "RANDOM: M-F, M-B, D-F (75 Top 1), D-B (75 Top 1)", "S2", "Top 1", 5, "A", "20 balls", "BC", "Off"),
  # ---- World 2: Rally Builder (consistency under pace) ----
  ("Faster Forehand", "M-F", "S3", "Top 1", 5, "A", "", "BC", "Off"),
  ("Faster Backhand", "M-B", "S3", "Top 1", 5, "A", "", "BC", "Off"),
@@ -144,11 +144,12 @@ L = [
  ("Defend and Turn", "D-FW -> D-BW -> S-C", "S4", "Top 2", 5, "B", "Two defensive balls, then attack the short one", "BC", "Off"),
  ("Match Chaos", "RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-C", "S4", "Top 2", 4.5, "B", "", "BC", "Off"),
  ("Heavy Match", "RANDOM: D-F (Top 3), D-B (Top 3), M-F (Slice 1), M-B (Slice 1)", "S4", "Mixed (per shot)", 5, "B", "", "BB", "Off"),
- ("FINAL BOSS: Champion", "RANDOM: M-FW, M-F, M-C, M-B, M-BW, D-F, D-B, S-C", "S4", "Mixed (per shot)", 4.5, "B", "30 balls", "BC", "Off"),
+ ("FINAL BOSS: Champion", "RANDOM: M-FW (Top 1), M-F (Top 2), M-C (80 Slice 1), M-B (Top 3), M-BW (Top 1), D-F (Top 2), D-B (80 Slice 1), S-C (Top 2)", "S4", "Mixed (per shot)", 4.5, "B", "30 balls", "BC", "Off"),
 ]
 assert len(L) == 100, len(L)
 
-SPEED = {"S1": 60, "S2": 70, "S3": 80, "S4": 90}
+# 60 km/h (the app's lowest) cannot carry a flat ball to the middle row from the baseline, so S1 is 65.
+SPEED = {"S1": 65, "S2": 70, "S3": 80, "S4": 90}
 SPINV = {"Flat": "0", "Top 1": "+500", "Top 2": "+1000", "Top 3": "+2000", "Slice 1": "-500"}
 
 
@@ -181,6 +182,14 @@ def side_of(n, shots):
     return "both"
 
 
+def check_of(shots, pos, stand, riser):
+    """'ok' = inside the machine's reach by the flight model fitted to app readings (tools/reach/).
+    'unchecked' = the model can't judge it yet: front-row targets, service-line or net position, Apex stand, riser."""
+    if stand != "Off" or riser == "ON" or pos in ("SC", "NC") or re.search(r"\bS-(BW|FW|B|F|C)", shots):
+        return "unchecked"
+    return "ok"
+
+
 def stage_of(n, shots, target):
     if n % 10 == 0:
         return "boss"
@@ -208,7 +217,8 @@ for i, (name, shots, speed, spin, delay, target, rule, pos, stand) in enumerate(
                      shots=shots, speed=speed, spin=spin, interval=delay, speed_kmh=SPEED[speed],
                      spin_rpm=SPINV.get(spin, "per shot"), target=target, balls=balls,
                      star1=s1, star2=s2, star3=s3, notes=rule, pos=pos, pos_name=POS[pos], stand=stand, riser=riser,
-                     side=side_of(i, shots), stage=stage_of(i, shots, target), cue=CUES.get(world, "")))
+                     side=side_of(i, shots), stage=stage_of(i, shots, target), cue=CUES.get(world, ""),
+                     check=check_of(shots, pos, stand, riser)))
 
 md = ["# All 100 Levels", "",
       "See **HOW-TO-PLAY.md** for the court map, target zones and machine positions.", "",
@@ -218,7 +228,8 @@ md = ["# All 100 Levels", "",
       "- **Target**: `C / D` = odd balls C, even balls D. `D|D|B` = one target per shot, in the order listed.",
       "- **Card**: a picture of the level drawn like the Proton app (all cards are also in `Level-Cards.pdf`).",
       "- **Stage**: worlds 1–9 go from the **same ball**, to fixed **patterns**, to **random** order, then the **boss**. World 10 mixes everything.",
-      "- One-sided drills come in forehand / backhand (or deuce / ad) pairs. Fast track never skips a one-sided level.", ""]
+      "- One-sided drills come in forehand / backhand (or deuce / ad) pairs. Fast track never skips a one-sided level.",
+      "- **⚠ unchecked**: these settings have not been checked against the app's reach limits yet (front-row targets, service-line and net positions, Apex stand, riser). If the app says *cannot hit target*, change the speed one notch at a time.", ""]
 for w in range(1, 11):
     wn, focus, wd = WORLDS[w]
     md += [f"## World {w}: {wn} · {focus}", "", f"_{wd}_", "",
@@ -228,7 +239,7 @@ for w in range(1, 11):
         mach = r["pos_name"] + ("" if r["stand"] == "Off" else f" · **{r['stand']} stand**") + (" · riser ON" if r["riser"] == "ON" else "")
         nm = "**" + r["name"] + "**" if r["level"] % 10 == 0 else r["name"]
         sp = r["spin"] + ("" if r["spin_rpm"] == "per shot" else f" ({r['spin_rpm']} rpm)")
-        md.append(f"| {r['level']} | {r['proton_name']} | {nm} | {r['stage']} | {mach} | {r['shots']} | {r['speed_kmh']} km/h | {sp} | {r['interval']} | {r['target']} | {r['balls']} | {r['star1']} / {r['star2']} / {r['star3']} | {r['notes']} | [card](level-cards/{r['proton_name']}.png) |")
+        md.append(f"| {r['level']} | {r['proton_name']} | {nm} | {r['stage']} | {mach} | {r['shots']} | {r['speed_kmh']} km/h | {sp} | {r['interval']} | {r['target']} | {r['balls']} | {r['star1']} / {r['star2']} / {r['star3']} | {'⚠ unchecked. ' if r['check'] == 'unchecked' else ''}{r['notes']} | [card](level-cards/{r['proton_name']}.png) |")
     md.append("")
 open(os.path.join(OUT, "LEVELS.md"), "w").write("\n".join(md))
 

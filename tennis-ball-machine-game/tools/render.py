@@ -7,7 +7,7 @@ ONLY = [int(x) for x in sys.argv[2:]]
 OUT = os.path.join(GAME, "level-cards")
 os.makedirs(OUT, exist_ok=True)
 
-SPEED = {"S1": 60, "S2": 70, "S3": 80, "S4": 90}
+SPEED = {"S1": 65, "S2": 70, "S3": 80, "S4": 90}
 SPIN = {"Flat": 0, "Top 1": 500, "Top 2": 1000, "Top 3": 2000, "Slice 1": -500}
 MIX_CYCLE = ["Top 1", "Top 2", "Slice 1", "Top 3"]
 ROW_T = {"D": 0.05, "M": 0.165, "S": 0.40}           # player's side, 0 = his baseline
@@ -80,9 +80,9 @@ def parse(row):
         spin, riser, speed = row["spin"], False, SPEED[row["speed"]]
         if extra:
             e = extra.strip()
-            mm = re.match(r"(S\d)\s*(.*)$", e)
+            mm = re.match(r"(S\d|\d{2,3})\s*(.*)$", e)
             if mm:
-                speed, e = SPEED[mm.group(1)], mm.group(2).strip()
+                speed, e = (SPEED[mm.group(1)] if mm.group(1).startswith("S") else int(mm.group(1))), mm.group(2).strip()
             if e == "lob":
                 riser, spin, hit = True, "Flat", hit or "O"
             elif e == "high":
@@ -295,6 +295,7 @@ def card(row):
     {''.join(svg)}
   </svg>
   <div class="mach"><span class="k">MACHINE</span> <b>{html.escape(row['pos_name'])}</b> · {'<b class="hi">Apex stand</b>' if row['stand'] == 'Apex' else row['stand'] + ' stand' if row['stand'] == 'Mini' else 'Stand Off'}</div>
+  {'<div class="warn">⚠ Not checked in the app yet. If it says “cannot hit target”, change Speed one notch at a time.</div>' if row.get("check") == "unchecked" else ''}
   <div class="bar">
     <div><span>Loops</span><b>{loops}</b></div>
     <div><span>Order</span><b>{'Random 🔀' if rnd else 'In order ➜'}</b></div>
@@ -307,7 +308,7 @@ def card(row):
     <div class="stars"><span class="k">STARS</span> {stars}</div>
     {f'<div class="note"><span class="k">RULE</span> {notes}</div>' if notes else ''}
     {f'<div class="note cue"><span class="k">COACH</span> {html.escape(row["cue"])}</div>' if row.get("cue") else ''}
-    <div class="foot"><b>Only real swings count.</b> {lefty} Set machine position and stand in the program's <b>Setup</b>.{' Stop the machine after ' + str(balls) + ' balls.' if loops * per_loop != balls else ''}</div>
+    <div class="foot"><b>Only real swings count.</b> {lefty} Set machine position and stand in the program's <b>Setup</b>. App says “cannot hit target”? Raise Speed one notch.{' Stop the machine after ' + str(balls) + ' balls.' if loops * per_loop != balls else ''}</div>
   </div>
 </section>"""
 
@@ -323,6 +324,7 @@ h1{margin:4px 0 6px;font-size:46px;font-weight:600}
 svg{display:block}
 .mach{background:#2c4a7a;padding:12px 34px;font-size:24px}.mach .k{min-width:0;margin-right:10px}.mach .hi{color:#ffe94d}
 .cue{color:#ffe94d}
+.warn{background:#f6a05c;color:#3a1c00;padding:10px 34px;font-size:21px;font-weight:600}
 .target small{color:#aab6d0;font-size:18px}
 .bar{display:grid;grid-template-columns:repeat(4,1fr);background:#24304b;text-align:center;padding:14px 0}
 .bar span{display:block;font-size:20px;color:#c8d3ea}.bar b{font-size:30px}
