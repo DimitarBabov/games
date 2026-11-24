@@ -1,0 +1,335 @@
+<title>George's Quest Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: a night-match game map. Sticky player HUD on top, then 10 world "courts" stacked as one winding path of tennis-ball nodes; tapping a node opens a bottom sheet to record balls in. Single dark look by choice. */
+:root{
+  --night:#121c3d; --panel:#1c2a55; --deep:#0c1430; --ink:#ffffff; --muted:#b9c6ea; --dim:#7f8db6;
+  --ball:#e8f22d; --ballDark:#9fa800; --gold:#ffc93c; --lock:#3a4670; --good:#4fd18b;
+  --display:"Lilita One","Arial Rounded MT Bold",system-ui,sans-serif; --body:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--night);color:var(--ink);font-family:var(--body);font-weight:700}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--deep)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--ball);outline-offset:3px}
+.in{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+/* HUD */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--deep);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.hud .in{padding-block:12px 12px;display:grid;gap:10px}
+.hud .in>*{min-width:0}
+.who>div:nth-child(2){min-width:0}
+.who{display:flex;align-items:center;gap:12px}
+.avatar{width:46px;height:46px;border-radius:50%;flex:0 0 auto;background:radial-gradient(circle at 35% 30%,#fbffb0,var(--ball) 55%,var(--ballDark));display:grid;place-items:center;font-family:var(--display);font-size:24px;color:#2a3000;box-shadow:0 0 0 3px #fff3}
+.who h1{margin:0;font-family:var(--display);font-weight:400;font-size:26px;line-height:1;letter-spacing:.5px}
+.who .sub{color:var(--muted);font-size:14px}
+.total{margin-left:auto;text-align:right}
+.total b{font-family:var(--display);font-weight:400;font-size:28px;color:var(--gold);font-variant-numeric:tabular-nums}
+.total span{display:block;font-size:12px;color:var(--muted)}
+.bar{position:relative;height:14px;border-radius:999px;background:var(--lock);overflow:visible}
+.bar .fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,var(--good),var(--ball));transition:width .6s}
+.bar .ms{position:absolute;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:var(--panel);border:2px solid var(--dim);display:grid;place-items:center;font-size:11px}
+.bar .ms.got{background:var(--gold);border-color:#fff;color:#3a2a00}
+.row{display:flex;gap:8px;align-items:center}
+.next{border:0;border-radius:14px;background:var(--ball);color:#232800;padding:10px 16px;font-weight:900;font-size:16px;white-space:nowrap}
+.badges{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.badges::-webkit-scrollbar{display:none}
+.bdg{flex:0 0 auto;width:36px;height:36px;border-radius:10px;border:0;background:var(--lock);font-size:19px;display:grid;place-items:center;filter:grayscale(1);opacity:.45}
+.bdg.got{filter:none;opacity:1;background:var(--panel);box-shadow:inset 0 0 0 2px var(--gold)}
+.sync{font-size:12px;color:var(--dim);min-height:1em}
+/* Map */
+main{padding-block:18px 60px}
+.world{position:relative;margin-bottom:22px;border-radius:22px;overflow:hidden;background:var(--panel)}
+.world .ban{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--wc)}
+.world .ban .wn{font-family:var(--display);font-weight:400;font-size:15px;opacity:.85;letter-spacing:1px}
+.world .ban h2{margin:0;font-family:var(--display);font-weight:400;font-size:24px;line-height:1.05;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+.world .ban .ws{margin-left:auto;font-weight:900;font-variant-numeric:tabular-nums;background:rgba(0,0,0,.22);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.world .court{position:relative;aspect-ratio:100/52;margin:6px 8px 10px;max-width:100%}
+.world .court svg{position:absolute;inset:0;width:100%;height:100%}
+.world.locked .court{filter:saturate(.25) brightness(.7)}
+.world .lockmsg{position:absolute;inset:auto 0 12px;text-align:center;font-size:14px;color:var(--muted)}
+.node{position:absolute;transform:translate(-50%,-50%);width:15%;max-width:64px;aspect-ratio:1;border:0;border-radius:50%;padding:0;background:radial-gradient(circle at 35% 30%,#fbffb0,var(--ball) 55%,var(--ballDark));color:#2a3000;font-family:var(--display);font-size:clamp(16px,4.4vw,24px);display:grid;place-items:center;box-shadow:0 4px 0 rgba(0,0,0,.3)}
+.node::after{content:"";position:absolute;inset:8%;border-radius:50%;border:2px solid rgba(255,255,255,.55);border-left-color:transparent;border-right-color:transparent;transform:rotate(35deg)}
+.node.locked{background:var(--lock);color:var(--dim);box-shadow:none}
+.node.locked::after{display:none}
+.node.boss{width:19%;max-width:80px;background:radial-gradient(circle at 35% 30%,#fff3c4,var(--gold) 55%,#b7790b)}
+.node.boss.locked{background:var(--lock)}
+.node .st{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:3px;font-family:var(--body);font-size:12px;letter-spacing:-1px;white-space:nowrap;color:var(--gold);text-shadow:0 1px 2px #000}
+.node .st .e{color:rgba(255,255,255,.28)}
+.node .tag{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:3px;font-family:var(--body);font-size:10px;font-weight:900;letter-spacing:.5px;background:#fff;color:#1c2a55;border-radius:6px;padding:1px 5px;white-space:nowrap}
+.node .crown{position:absolute;bottom:88%;left:50%;transform:translateX(-50%);font-size:clamp(16px,4vw,22px)}
+.node.here{animation:pulse 1.4s ease-in-out infinite}
+.node.here .tag{background:var(--good);color:#06301a}
+@keyframes pulse{0%,100%{box-shadow:0 4px 0 rgba(0,0,0,.3),0 0 0 0 rgba(232,242,45,.7)}50%{box-shadow:0 4px 0 rgba(0,0,0,.3),0 0 0 12px rgba(232,242,45,0)}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:0 0 14px}
+/* Sheet */
+.scrim{position:fixed;inset:0;background:rgba(5,10,25,.6);z-index:40}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--panel);border-radius:24px 24px 0 0;max-height:88%;overflow:auto;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.5)}
+.sheet .in{display:grid;gap:12px;padding-top:16px}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--dim);margin:0 auto}
+.sheet .eyebrow{font-size:13px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--ball)}
+.sheet h3{margin:2px 0 0;font-family:var(--display);font-weight:400;font-size:32px;line-height:1.05}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.facts span{background:var(--deep);border-radius:999px;padding:5px 11px;font-size:14px;color:var(--muted)}
+.facts span b{color:var(--ink)}
+.facts span.apex{background:var(--gold);color:#3a2a00}
+.need{display:flex;gap:16px;font-size:18px;color:var(--gold);font-variant-numeric:tabular-nums}
+.need small{color:var(--muted);font-size:14px}
+.entry{display:flex;align-items:center;justify-content:center;gap:16px;background:var(--deep);border-radius:18px;padding:14px}
+.entry button{width:56px;height:56px;border-radius:50%;border:0;background:var(--lock);font-size:30px;font-weight:900}
+.entry output{font-family:var(--display);font-size:56px;min-width:2.2ch;text-align:center;font-variant-numeric:tabular-nums;line-height:1}
+.entry .of{color:var(--muted);font-size:20px}
+.prev{text-align:center;font-size:36px;letter-spacing:4px;color:var(--gold);min-height:44px}
+.prev .e{color:rgba(255,255,255,.2)}
+.save{border:0;border-radius:16px;background:var(--ball);color:#232800;font-weight:900;font-size:20px;padding:15px}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+.links a,.links button{flex:1;text-align:center;text-decoration:none;border:0;border-radius:14px;background:var(--deep);color:var(--ink);padding:11px;font-weight:800;font-size:15px}
+.hist{font-size:14px;color:var(--muted)}
+.hist button{border:0;background:none;color:var(--dim);text-decoration:underline;padding:0;font-size:14px}
+.lockbox{background:var(--deep);border-radius:16px;padding:14px;color:var(--muted)}
+.lockbox b{color:var(--ink)}
+/* Toast + fx */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;background:#fff;color:#1c2a55;border-radius:18px;padding:12px 18px;font-weight:900;box-shadow:0 10px 30px rgba(0,0,0,.4);max-width:calc(100% - 32px);text-align:center;animation:pop .35s ease-out}
+.toast .big{display:block;font-family:var(--display);font-weight:400;font-size:26px}
+@keyframes pop{from{transform:translate(-50%,30px) scale(.9);opacity:0}to{transform:translate(-50%,0) scale(1);opacity:1}}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:59}
+@media (prefers-reduced-motion:reduce){.node.here{animation:none}.toast{animation:none}.bar .fill{transition:none}}
+</style>
+
+<header class="hud"><div class="in">
+  <div class="who">
+    <div class="avatar" aria-hidden="true">G</div>
+    <div><h1>George</h1><div class="sub" id="rank">Rally Rookie</div></div>
+    <div class="total"><b id="tot">0</b><span>of 300 ★</span></div>
+  </div>
+  <div class="bar" id="bar" aria-label="Stars progress"><div class="fill" id="fill" style="width:0"></div></div>
+  <div class="row">
+    <button class="next" id="nextBtn">▶ Level 1</button>
+    <div class="badges" id="badges" aria-label="Badges"></div>
+  </div>
+  <div class="sync" id="sync">Loading progress…</div>
+</div></header>
+
+<main><div class="in">
+  <div class="legend"><span>🟡 open</span><span>🔒 locked</span><span>👑 boss</span><span><b style="color:var(--gold)">SERVE</b> = Apex stand</span><span>Tap a ball to play</span></div>
+  <div id="map"></div>
+</div></main>
+
+<div class="scrim" id="scrim" hidden></div>
+<section class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="in" id="sheetBody"></div></section>
+<div class="toast" id="toast" hidden></div>
+<canvas id="fx"></canvas>
+
+<script>
+const LV = [{"n":1,"w":1,"name":"Forehand Start","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Forehands only"},{"n":2,"w":1,"name":"Backhand Start","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Backhands only"},{"n":3,"w":1,"name":"Backhand Spin-Up","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":4,"w":1,"name":"Ping-Pong","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Alternate forehand / backhand"},{"n":5,"w":1,"name":"Ping-Pong 2","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":6,"w":1,"name":"Two and One","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":7,"w":1,"name":"First Guess","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Order random: watch the ball leave the machine"},{"n":8,"w":1,"name":"Guess It","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":9,"w":1,"name":"Three-Way Guess","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Ball at the body: step away"},{"n":10,"w":1,"name":"BOSS: Rookie Rally","t":"A","b":20,"s":[14,16,18],"pos":"BC","stand":"Off","notes":"20 balls"},{"n":11,"w":2,"name":"Faster Forehand","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":12,"w":2,"name":"Faster Backhand","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":13,"w":2,"name":"Body Ball","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Step away, pick forehand or backhand"},{"n":14,"w":2,"name":"Fast Ping-Pong","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":15,"w":2,"name":"Two Backhands","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":16,"w":2,"name":"Three Spots","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":17,"w":2,"name":"Fast Guess","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":18,"w":2,"name":"Three-Way Fast","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":19,"w":2,"name":"Speed Step","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":20,"w":2,"name":"BOSS: Rally Builder","t":"A","b":20,"s":[14,16,18],"pos":"BC","stand":"Off","notes":"20 balls"},{"n":21,"w":3,"name":"Deep Forehand","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Aim high over the net"},{"n":22,"w":3,"name":"Deep Backhand","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":23,"w":3,"name":"Heavy Deep Forehand","t":"B","b":10,"s":[6,7,8],"pos":"BB","stand":"Off","notes":"Machine behind the baseline: start 1 step back"},{"n":24,"w":3,"name":"Deep Ping-Pong","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":25,"w":3,"name":"Heavy Ping-Pong","t":"B","b":10,"s":[6,7,8],"pos":"BB","stand":"Off","notes":""},{"n":26,"w":3,"name":"Middle Box Rally","t":"G","b":10,"s":[4,5,6],"pos":"BC","stand":"Off","notes":""},{"n":27,"w":3,"name":"Deep Guess","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":28,"w":3,"name":"Heavy Guess","t":"B","b":10,"s":[6,7,8],"pos":"BB","stand":"Off","notes":""},{"n":29,"w":3,"name":"Middle Box Guess","t":"G","b":10,"s":[4,5,6],"pos":"BC","stand":"Off","notes":""},{"n":30,"w":3,"name":"BOSS: Deep Diver","t":"B","b":20,"s":[12,14,16],"pos":"BB","stand":"Off","notes":"20 balls"},{"n":31,"w":4,"name":"Wide Forehand","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Recover to the center mark after every shot"},{"n":32,"w":4,"name":"Wide Backhand","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Recover to the center mark"},{"n":33,"w":4,"name":"Short Forehand","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Run in, hit, backpedal to the baseline"},{"n":34,"w":4,"name":"Side to Side","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Recover to the center mark"},{"n":35,"w":4,"name":"In and Out","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Run in for the short ball, back for the deep one"},{"n":36,"w":4,"name":"Four Corners","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Recover to the center mark"},{"n":37,"w":4,"name":"Wide Guess","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Recover to the center mark"},{"n":38,"w":4,"name":"Short or Deep","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":39,"w":4,"name":"Five-Way Run","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Recover to the center mark"},{"n":40,"w":4,"name":"BOSS: Iron Legs","t":"B","b":20,"s":[12,14,16],"pos":"BC","stand":"Off","notes":"20 balls. Recover to the center mark"},{"n":41,"w":5,"name":"Forehand Crosscourt","t":"C","b":10,"s":[6,7,8],"pos":"CR","stand":"Off","notes":"Machine in the corner: a real crosscourt rally"},{"n":42,"w":5,"name":"Backhand Crosscourt","t":"C","b":10,"s":[6,7,8],"pos":"CL","stand":"Off","notes":"Machine in the corner"},{"n":43,"w":5,"name":"Forehand Corner Box","t":"E","b":10,"s":[4,5,6],"pos":"CR","stand":"Off","notes":"Machine in the corner"},{"n":44,"w":5,"name":"Crosscourt Ping-Pong","t":"C","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Both sides crosscourt"},{"n":45,"w":5,"name":"Switch It","t":"C / D","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Odd balls crosscourt, even balls down the line"},{"n":46,"w":5,"name":"Cross and Line","t":"C / D","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Forehand crosscourt, backhand down the line"},{"n":47,"w":5,"name":"Crosscourt Guess","t":"C","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Every ball crosscourt"},{"n":48,"w":5,"name":"Line Guess","t":"D","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Every ball down the line"},{"n":49,"w":5,"name":"Box Guess","t":"E","b":10,"s":[4,5,6],"pos":"BC","stand":"Off","notes":"Every ball into the crosscourt box"},{"n":50,"w":5,"name":"BOSS: Sniper","t":"E / D","b":20,"s":[8,10,12],"pos":"BC","stand":"Off","notes":"20 balls. Odd balls crosscourt box, even balls down the line"},{"n":51,"w":6,"name":"Topspin Forehand","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Ball kicks up: move back, hit at waist height"},{"n":52,"w":6,"name":"Slice Backhand","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Ball stays low: bend your knees"},{"n":53,"w":6,"name":"Heavy Forehand","t":"A","b":10,"s":[7,8,9],"pos":"BB","stand":"Off","notes":"High bouncer: step back or take it early"},{"n":54,"w":6,"name":"Topspin Ping-Pong","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":55,"w":6,"name":"Slice Ping-Pong","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":""},{"n":56,"w":6,"name":"Spin Switch","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":57,"w":6,"name":"Forehand Spin Guess","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Forehands only"},{"n":58,"w":6,"name":"Backhand Spin Guess","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Backhands only"},{"n":59,"w":6,"name":"Full Spin Guess","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":60,"w":6,"name":"BOSS: Spin Doctor","t":"B","b":20,"s":[12,14,16],"pos":"BB","stand":"Off","notes":"20 balls"},{"n":61,"w":7,"name":"Deuce Body Serve","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Apex","notes":"Stand on the deuce side. Split step as the machine fires"},{"n":62,"w":7,"name":"Ad Body Serve","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Apex","notes":"Stand on the ad side"},{"n":63,"w":7,"name":"Deuce Wide Serve","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Apex","notes":"Short swing, block it back"},{"n":64,"w":7,"name":"Deuce T and Wide","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Apex","notes":"Deuce side"},{"n":65,"w":7,"name":"Ad T and Wide","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Apex","notes":"Ad side"},{"n":66,"w":7,"name":"Deuce, Ad, Deuce","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Apex","notes":"Switch sides after every return, like a match"},{"n":67,"w":7,"name":"Read the Deuce Serve","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Apex","notes":"Deuce side"},{"n":68,"w":7,"name":"Read the Ad Serve","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Apex","notes":"Ad side"},{"n":69,"w":7,"name":"First or Second Serve","t":"C","b":10,"s":[6,7,8],"pos":"BC","stand":"Apex","notes":"Deuce side. Big serve: block crosscourt. Slow serve: step in"},{"n":70,"w":7,"name":"BOSS: Return +1","t":"B","b":20,"s":[12,14,16],"pos":"BC","stand":"Apex","notes":"20 balls. Return, recover to the middle, then hit the next ball"},{"n":71,"w":8,"name":"Forehand Volley","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Stand 2 m from the net. Catch the ball in the air"},{"n":72,"w":8,"name":"Backhand Volley","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Stand 2 m from the net"},{"n":73,"w":8,"name":"Quick Hands","t":"A","b":10,"s":[7,8,9],"pos":"SC","stand":"Off","notes":"Machine on the service line: less time to react"},{"n":74,"w":8,"name":"Volley Ping-Pong","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":75,"w":8,"name":"Approach + Volley","t":"B|A","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Start at the baseline: approach, then volley"},{"n":76,"w":8,"name":"First Overhead","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Riser on. Point at the ball with your free hand"},{"n":77,"w":8,"name":"Quick Hands Guess","t":"A","b":10,"s":[7,8,9],"pos":"SC","stand":"Off","notes":"Machine on the service line"},{"n":78,"w":8,"name":"Volley Guess","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":79,"w":8,"name":"Overhead Guess","t":"A","b":10,"s":[7,8,9],"pos":"BC","stand":"Off","notes":"Riser on. Turn sideways and shuffle"},{"n":80,"w":8,"name":"BOSS: Net Ninja","t":"B|A|A","b":20,"s":[12,14,16],"pos":"BC","stand":"Off","notes":"20 balls. Approach, then 2 volleys. Start each pattern at the baseline"},{"n":81,"w":9,"name":"Forehand Pass","t":"D","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":"Machine at the net is the opponent: pass it down the line"},{"n":82,"w":9,"name":"Backhand Pass","t":"D","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":"Pass down the line"},{"n":83,"w":9,"name":"First Lob","t":"B","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":"Lob over the machine, land it deep"},{"n":84,"w":9,"name":"Pass Ping-Pong","t":"D","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":""},{"n":85,"w":9,"name":"Cross and Line Pass","t":"C / D","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":"Odd balls crosscourt, even balls down the line"},{"n":86,"w":9,"name":"Pass, Pass, Lob","t":"D|D|B","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":""},{"n":87,"w":9,"name":"Pass Guess","t":"D","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":""},{"n":88,"w":9,"name":"Defend!","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Machine back on the baseline. Hit high and deep to get back in the point"},{"n":89,"w":9,"name":"Pass or Lob","t":"D|D|B","b":10,"s":[6,7,8],"pos":"NC","stand":"Off","notes":"Wide ball: pass. Middle ball: lob"},{"n":90,"w":9,"name":"BOSS: Passing Pro","t":"D|D|B|D|D","b":20,"s":[12,14,16],"pos":"NC","stand":"Off","notes":"20 balls. Pass the wide balls, lob the middle one"},{"n":91,"w":10,"name":"Serve +1","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Serve first (any box), then hit the machine's ball deep. Only the machine ball counts"},{"n":92,"w":10,"name":"Serve +1 Attack","t":"E / F","b":10,"s":[4,5,6],"pos":"BC","stand":"Off","notes":"Serve, then attack the short ball into either corner box"},{"n":93,"w":10,"name":"Forehand Battle","t":"C","b":10,"s":[6,7,8],"pos":"CR","stand":"Off","notes":"Machine in the corner: crosscourt forehand rally"},{"n":94,"w":10,"name":"Backhand Battle","t":"C","b":10,"s":[6,7,8],"pos":"CL","stand":"Off","notes":"Machine in the corner: crosscourt backhand rally"},{"n":95,"w":10,"name":"Point Builder","t":"B|B|A","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Rally, attack the short ball, finish with a volley"},{"n":96,"w":10,"name":"Return +1 Ad","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Apex","notes":"Apex stand. Return from the ad side, then the next ball"},{"n":97,"w":10,"name":"Defend and Turn","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":"Two defensive balls, then attack the short one"},{"n":98,"w":10,"name":"Match Chaos","t":"B","b":10,"s":[6,7,8],"pos":"BC","stand":"Off","notes":""},{"n":99,"w":10,"name":"Heavy Match","t":"B","b":10,"s":[6,7,8],"pos":"BB","stand":"Off","notes":""},{"n":100,"w":10,"name":"FINAL BOSS: Champion","t":"B","b":30,"s":[18,21,24],"pos":"BC","stand":"Off","notes":"30 balls"}];
+const WORLDS=[["Rally Rookie","#3fa34d"],["Rally Builder","#2f6fd0"],["Deep Zone","#d0612a"],["Fast Feet","#7a4fd6"],["Aim Master","#138f8f"],["Spin Lab","#c2418f"],["Return of Serve","#c98a0b"],["Net Attack","#cf3f3f"],["Pass & Defend","#4656c9"],["Match Play","#2a2f45"]];
+const POS={BC:"Baseline center",BB:"Behind baseline",CL:"Corner (left on screen)",CR:"Corner (right on screen)",SC:"Service line center",NC:"Net center"};
+const TXT={A:"whole court",B:"past the service line",C:"crosscourt half",D:"down-the-line half",E:"crosscourt box",F:"down-the-line box",G:"middle deep box"};
+const STAGE=["Same ball","Same ball","Same ball","Pattern","Pattern","Pattern","Random","Random","Random","BOSS"];
+const MILES=[25,50,100,150,200,300];
+const SIM="https://claude.ai/artifact/VJ6tTykXB6J12dKHQSSAhT#";
+const CARD="https://github.com/DimitarBabov/games/blob/main/tennis-ball-machine-game/level-cards/";
+const BADGES=[
+ {id:"first",i:"⭐",n:"First Star",h:"Earn your first star"},
+ {id:"perfect",i:"💯",n:"Perfect",h:"Every ball in on any level"},
+ {id:"comeback",i:"💪",n:"Comeback Kid",h:"Pass a level after failing it twice"},
+ {id:"boss",i:"👑",n:"Boss Slayer",h:"Beat a boss"},
+ {id:"three",i:"🌟",n:"Three-Star World",h:"3 stars on every level of one world"},
+ {id:"w4",i:"🦵",n:"Iron Legs",h:"Beat World 4"},
+ {id:"sniper",i:"🎯",n:"Sniper",h:"3 stars on a box level"},
+ {id:"w6",i:"🌀",n:"Spin Doctor",h:"Beat World 6"},
+ {id:"w7",i:"🧱",n:"The Wall",h:"Beat World 7, Return of Serve"},
+ {id:"w8",i:"🥷",n:"Net Ninja",h:"Beat World 8"},
+ {id:"w9",i:"🏹",n:"Passing Pro",h:"Beat World 9"},
+ {id:"habit",i:"📅",n:"Iron Habit",h:"Play on 3 days within one week"},
+ {id:"champ",i:"🏆",n:"Champion",h:"Beat level 100"}];
+
+/* ---------- state ---------- */
+let S={v:1,lv:{}};            // lv["7"] = [{d:"2026-11-29",s:8}, ...]
+let db=null, ref=null, sel=null, entryVal=0;
+try{const c=JSON.parse(localStorage.getItem("gqm")||"null");if(c&&c.lv)S=c}catch(e){}
+const tries=n=>S.lv[n]||[];
+const starsOf=(n,s)=>{const L=LV[n-1];return s>=L.s[2]?3:s>=L.s[1]?2:s>=L.s[0]?1:0};
+const best=n=>tries(n).reduce((m,t)=>Math.max(m,t.s),-1);
+const stars=n=>{const b=best(n);return b<0?0:starsOf(n,b)};
+const passed=n=>stars(n)>0;
+const firstTry3=n=>tries(n).length>0&&starsOf(n,tries(n)[0].s)===3;
+const worldStars=w=>{let s=0;for(let i=1;i<=9;i++)s+=stars((w-1)*10+i);return s};
+function unlocked(n){
+  if(n===1)return true;
+  const i=(n-1)%10, w=Math.ceil(n/10);
+  if(i===0)return passed(n-1);
+  if(i===9)return worldStars(w)>=15;
+  if(passed(n-1))return true;
+  return i>=2&&firstTry3(n-2)&&passed(n-2);
+}
+const total=()=>{let s=0;for(let n=1;n<=100;n++)s+=stars(n);return s};
+function current(){for(let n=1;n<=100;n++)if(unlocked(n)&&!passed(n))return n;return 100}
+function earned(){
+  const e=new Set(), all=[];let bosses=0;
+  for(let n=1;n<=100;n++){const T=tries(n);T.forEach(t=>all.push(t.d));
+    if(stars(n))e.add("first");
+    if(T.some(t=>t.s>=LV[n-1].b))e.add("perfect");
+    const fp=T.findIndex(t=>starsOf(n,t.s)>0); if(fp>=2)e.add("comeback");
+    if(stars(n)===3&&/[EFG]/.test(LV[n-1].t))e.add("sniper");
+    if(n%10===0&&passed(n))bosses++;}
+  if(bosses)e.add("boss");
+  for(let w=1;w<=10;w++){let ok=true;for(let i=1;i<=10;i++)if(stars((w-1)*10+i)<3)ok=false;if(ok)e.add("three")}
+  [[4,"w4"],[6,"w6"],[7,"w7"],[8,"w8"],[9,"w9"],[10,"champ"]].forEach(([w,id])=>{if(passed(w*10))e.add(id)});
+  const days=[...new Set(all)].sort().map(d=>Date.parse(d)/864e5);
+  for(let i=0;i+2<days.length;i++)if(days[i+2]-days[i]<=6)e.add("habit");
+  return {e,bosses};
+}
+
+/* ---------- render ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const starStr=k=>"★".repeat(k)+`<span class="e">${"★".repeat(3-k)}</span>`;
+const PTS=[[10,26],[30,26],[50,26],[70,26],[90,26],[90,74],[70,74],[50,74],[30,74],[10,74]].map(([x,y])=>[x,y]);
+function renderHud(){
+  const t=total(), cur=current(), {e,bosses}=earned();
+  $("tot").textContent=t;
+  $("fill").style.width=(t/300*100)+"%";
+  $("bar").querySelectorAll(".ms").forEach(m=>m.remove());
+  MILES.forEach(m=>{const d=document.createElement("div");d.className="ms"+(t>=m?" got":"");d.style.left=(m/300*100)+"%";d.textContent=t>=m?"🎁":"";d.title=`${m} stars: reward`;$("bar").appendChild(d)});
+  $("nextBtn").textContent=`▶ Level ${cur}`;
+  $("rank").textContent=`World ${Math.ceil(cur/10)} · ${WORLDS[Math.ceil(cur/10)-1][0]}`;
+  $("badges").innerHTML=BADGES.map(b=>`<button class="bdg${e.has(b.id)?" got":""}" data-b="${b.id}" aria-label="${esc(b.n)}${e.has(b.id)?" (earned)":""}">${b.i}</button>`).join("");
+  return {e,bosses};
+}
+function renderMap(){
+  const cur=current(); let h="";
+  for(let w=1;w<=10;w++){
+    const base=(w-1)*10, open=unlocked(base+1);
+    let ws=0;for(let i=1;i<=10;i++)ws+=stars(base+i);
+    const pts=PTS.map(p=>p.join(",")).join(" ");
+    h+=`<section class="world${open?"":" locked"}" style="--wc:${WORLDS[w-1][1]}">
+      <div class="ban"><div><div class="wn">WORLD ${w}</div><h2>${WORLDS[w-1][0]}</h2></div><div class="ws">${ws} / 30 ★</div></div>
+      <div class="court"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <polyline points="${pts}" fill="none" stroke="rgba(255,255,255,.25)" stroke-dasharray="2 10" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:6px"/></svg>`;
+    for(let i=0;i<10;i++){
+      const n=base+i+1, L=LV[n-1], u=unlocked(n), k=stars(n), boss=i===9;
+      const tag=n===cur?"YOU":L.stand==="Apex"?"SERVE":"";
+      h+=`<button class="node${boss?" boss":""}${u?"":" locked"}${n===cur?" here":""}" style="left:${PTS[i][0]}%;top:${PTS[i][1]}%" data-n="${n}" aria-label="Level ${n} ${esc(L.name)}${u?"":" locked"}${k?`, ${k} stars`:""}">
+        ${boss&&u?'<span class="crown">👑</span>':""}${tag&&!(boss&&u)?`<span class="tag">${tag}</span>`:""}${u?n:"🔒"}${u&&(k||passed(n)||tries(n).length)?`<span class="st">${starStr(k)}</span>`:""}</button>`;
+    }
+    h+=`${open?"":`<div class="lockmsg">🔒 Beat the World ${w-1} boss to open</div>`}</div></section>`;
+  }
+  $("map").innerHTML=h;
+}
+function render(){renderHud();renderMap();if(sel)openSheet(sel,true)}
+
+/* ---------- sheet ---------- */
+function targetText(t){
+  if(t.includes("|"))return [...new Set(t.split("|"))].map(x=>`${x} ${TXT[x]}`).join(" / ");
+  return t.split("/").map(x=>x.trim()).map(x=>`${x} ${TXT[x]}`).join(" / ");
+}
+function lockReason(n){
+  const i=(n-1)%10,w=Math.ceil(n/10);
+  if(i===0)return `Beat the <b>World ${w-1} boss</b> (level ${n-1}) to open this world.`;
+  if(i===9)return `The boss opens at <b>15 stars</b> in levels ${n-9}–${n-1}. You have <b>${worldStars(w)}</b>.`;
+  return `Get at least 1 star on <b>level ${n-1}</b> first.`;
+}
+function openSheet(n,keep){
+  sel=n; const L=LV[n-1], u=unlocked(n), T=tries(n), b=best(n), k=stars(n), i=(n-1)%10;
+  if(!keep)entryVal=b>=0?b:Math.max(0,L.s[0]);
+  const id="L"+String(n).padStart(3,"0");
+  $("sheetBody").innerHTML=`<div class="grab"></div>
+   <div><div class="eyebrow">World ${L.w} · Level ${n} · ${STAGE[i]}</div><h3 id="shTitle">${esc(L.name)}</h3></div>
+   <div class="facts"><span>📍 <b>${POS[L.pos]}</b></span>${L.stand==="Apex"?'<span class="apex">Apex stand</span>':""}<span>🎯 <b>${esc(targetText(L.t))}</b></span><span>🎾 ${L.b} balls</span></div>
+   <div class="need"><span>★ ${L.s[0]}</span><span>★★ ${L.s[1]}</span><span>★★★ ${L.s[2]}</span><small>balls in</small></div>
+   ${L.notes?`<div class="hist">${esc(L.notes)}</div>`:""}
+   ${u?`<div class="entry"><button id="minus" aria-label="One less">−</button><output id="val" aria-live="polite">${entryVal}</output><span class="of">/ ${L.b}</span><button id="plus" aria-label="One more">+</button></div>
+   <div class="prev" id="prev"></div>
+   <button class="save" id="save">Save result</button>
+   <div class="hist">${T.length?`Best ${b}/${L.b} ${"★".repeat(k)||"(no star yet)"} · ${T.length} ${T.length===1?"try":"tries"} · <button id="undo">Remove last try</button>`:"No tries yet. Dad counts the balls that land in the target."}</div>`
+   :`<div class="lockbox">🔒 ${lockReason(n)}</div>`}
+   <div class="links"><a href="${SIM+id}" target="_blank" rel="noopener">▶ Watch it</a><a href="${CARD+id}.png" target="_blank" rel="noopener">🃏 Machine card</a><button id="close">Close</button></div>`;
+  $("scrim").hidden=false;$("sheet").hidden=false;
+  const upd=()=>{$("val").textContent=entryVal;const s=starsOf(n,entryVal);$("prev").innerHTML=starStr(s)};
+  if(u){upd();
+    $("minus").onclick=()=>{entryVal=Math.max(0,entryVal-1);upd()};
+    $("plus").onclick=()=>{entryVal=Math.min(L.b,entryVal+1);upd()};
+    $("save").onclick=()=>saveTry(n,entryVal);
+    const ub=$("undo"); if(ub)ub.onclick=()=>{const T2=tries(n).slice(0,-1);if(T2.length)S.lv[n]=T2;else delete S.lv[n];persist();render();toast("Last try removed")};
+  }
+  $("close").onclick=closeSheet;
+}
+function closeSheet(){sel=null;$("scrim").hidden=true;$("sheet").hidden=true}
+
+/* ---------- saving ---------- */
+function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+let writing=Promise.resolve();
+function persist(){
+  try{localStorage.setItem("gqm",JSON.stringify(S))}catch(e){}
+  if(ref){const snap=JSON.parse(JSON.stringify(S));writing=writing.then(()=>ref.set(snap)).then(()=>{$("sync").textContent="Saved ✓"}).catch(e=>{$("sync").textContent="Couldn't save online. Saved on this phone."})}
+}
+function saveTry(n,s){
+  const L=LV[n-1], before={k:stars(n),tot:total(),e:earned().e,open:new Set(Array.from({length:100},(_,i)=>i+1).filter(unlocked))};
+  S.lv[n]=[...tries(n),{d:today(),s}];
+  persist();
+  const k=starsOf(n,s), after=earned().e, tot=total();
+  const newB=BADGES.filter(b=>after.has(b.id)&&!before.e.has(b.id));
+  const newOpen=Array.from({length:100},(_,i)=>i+1).filter(x=>unlocked(x)&&!before.open.has(x));
+  const mile=MILES.find(m=>before.tot<m&&tot>=m);
+  closeSheet(); render();
+  let msg;
+  if(k===3)msg=`<span class="big">★★★ Level crushed!</span>`;
+  else if(k===2)msg=`<span class="big">★★ Great job!</span>`;
+  else if(k===1)msg=`<span class="big">★ Level passed!</span>`;
+  else msg=`<span class="big">${s}/${L.b}</span>Need ${L.s[0]} for a star. Try again!`;
+  if(k>before.k&&before.k>0)msg+=`New best!`;
+  if(newOpen.length)msg+=`<br>🔓 Level ${newOpen.join(" & ")} unlocked`;
+  if(newB.length)msg+=`<br>🏅 Badge: ${newB.map(b=>b.i+" "+esc(b.n)).join(", ")}`;
+  if(mile)msg+=`<br>🎁 ${mile} stars! Reward time`;
+  toast(msg, k>0?5200:3200);
+  if(k>0)confetti(k+(newB.length?2:0)+(mile?2:0));
+}
+let tt;function toast(html,ms=3000){const t=$("toast");t.innerHTML=html;t.hidden=false;t.style.animation="none";void t.offsetWidth;t.style.animation="";clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,ms)}
+
+/* ---------- confetti ---------- */
+const fx=$("fx"),fc=fx.getContext("2d");let parts=[],raf=0;
+function confetti(power){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const d=Math.min(devicePixelRatio||1,2);fx.width=innerWidth*d;fx.height=innerHeight*d;fc.setTransform(d,0,0,d,0,0);
+  const cols=["#e8f22d","#ffc93c","#4fd18b","#ffffff","#ff7a59","#7fd3ff"];
+  for(let i=0;i<40*power;i++)parts.push({x:innerWidth/2,y:innerHeight*.8,vx:(Math.random()-.5)*14,vy:-8-Math.random()*12,r:3+Math.random()*5,c:cols[i%cols.length],a:Math.random()*6,ball:Math.random()<.15});
+  if(!raf)raf=requestAnimationFrame(step);
+}
+function step(){
+  fc.clearRect(0,0,innerWidth,innerHeight);
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.vx*=.99;p.a+=.2;fc.fillStyle=p.c;
+    if(p.ball){fc.beginPath();fc.arc(p.x,p.y,p.r+3,0,7);fc.fillStyle="#e8f22d";fc.fill()}else{fc.save();fc.translate(p.x,p.y);fc.rotate(p.a);fc.fillRect(-p.r,-p.r/2,p.r*2,p.r);fc.restore()}});
+  parts=parts.filter(p=>p.y<innerHeight+40);
+  raf=parts.length?requestAnimationFrame(step):0;
+}
+
+/* ---------- events ---------- */
+$("map").addEventListener("click",e=>{const b=e.target.closest(".node");if(b)openSheet(+b.dataset.n)});
+$("nextBtn").onclick=()=>{const n=current();const el=document.querySelector(`.node[data-n="${n}"]`);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});openSheet(n)};
+$("scrim").onclick=closeSheet;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sel)closeSheet()});
+$("badges").addEventListener("click",e=>{const b=e.target.closest(".bdg");if(!b)return;const B=BADGES.find(x=>x.id===b.dataset.b);const {e:E,bosses}=earned();
+  toast(`<span class="big">${B.i} ${esc(B.n)}</span>${E.has(B.id)?"Earned!":esc(B.h)}${B.id==="boss"?` · ${bosses}/10 bosses`:""}`)});
+
+render();
+$("sync").textContent="Saved on this phone";
+
+/* ---------- shared progress (db) ---------- */
+(async()=>{
+  const timer=setTimeout(()=>{$("sync").textContent="Online progress not reachable yet. Showing this phone's copy."},10000);
+  try{
+    db=window.claude&&window.claude.use?await window.claude.use("db"):null;
+    if(!db){clearTimeout(timer);$("sync").textContent="Progress saves on this phone only.";return}
+    ref=db.doc("progress/george");
+    ref.onSnapshot(snap=>{
+      if(!snap.metadata.fromCache)clearTimeout(timer);
+      if(snap.exists){const d=snap.data();if(d&&d.lv){S={v:1,lv:JSON.parse(JSON.stringify(d.lv))};try{localStorage.setItem("gqm",JSON.stringify(S))}catch(e){}render()}}
+      if(!snap.metadata.fromCache)$("sync").textContent="Progress synced ✓";
+    },err=>{clearTimeout(timer);$("sync").textContent="Couldn't reach online progress. Saving on this phone."});
+  }catch(e){clearTimeout(timer);$("sync").textContent="Progress saves on this phone only."}
+})();
+</script>
