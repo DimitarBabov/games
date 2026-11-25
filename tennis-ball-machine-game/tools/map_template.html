@@ -71,6 +71,8 @@ main{padding-block:18px 60px}
 .node.here{animation:pulse 1.4s ease-in-out infinite}
 .node.here .tag{background:var(--good);color:#06301a}
 @keyframes pulse{0%,100%{box-shadow:0 4px 0 rgba(0,0,0,.3),0 0 0 0 rgba(232,242,45,.7)}50%{box-shadow:0 4px 0 rgba(0,0,0,.3),0 0 0 12px rgba(232,242,45,0)}}
+.openall{display:block;width:100%;border:2px dashed var(--dim);border-radius:14px;background:transparent;color:var(--muted);padding:10px 12px;font-weight:800;font-size:14px;margin:0 0 14px;text-align:center}
+.openall.on{border-color:var(--gold);color:var(--gold)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:0 0 14px}
 /* Sheet */
 .scrim{position:fixed;inset:0;background:rgba(5,10,25,.6);z-index:40}
@@ -123,6 +125,7 @@ main{padding-block:18px 60px}
 
 <main><div class="in">
   <div class="legend"><span>🟡 open</span><span>🔒 locked</span><span>👑 boss</span><span>🥇 gold = passed again on a later day, first try</span><span><b style="color:var(--gold)">SERVE</b> = Apex stand</span><span>Tap a ball to play</span></div>
+  <button class="openall" id="openAllBtn"></button>
   <div id="map"></div>
 </div></main>
 
@@ -188,7 +191,7 @@ function goldPick(){
 }
 const firstTry3=n=>tries(n).length>0&&starsOf(n,tries(n)[0].s)===3;
 const worldStars=w=>{let s=0;for(let i=1;i<=9;i++)s+=stars((w-1)*10+i);return s};
-function unlocked(n){
+function earnedOpen(n){
   if(n===1)return true;
   const i=(n-1)%10, w=Math.ceil(n/10);
   if(i===0)return passed(n-1);
@@ -196,8 +199,11 @@ function unlocked(n){
   if(passed(n-1))return true;
   return i>=2&&firstTry3(n-2)&&LV[n-2].side==="both";
 }
+// Coach mode: every level can be played, whatever has been earned. Stars, gold and badges work as usual.
+const openAll=()=>S.openAll!==false;
+const unlocked=n=>openAll()||earnedOpen(n);
 const total=()=>{let s=0;for(let n=1;n<=100;n++)s+=stars(n);return s};
-function current(){for(let n=1;n<=100;n++)if(unlocked(n)&&!passed(n))return n;return 100}
+function current(){for(let n=1;n<=100;n++)if(earnedOpen(n)&&!passed(n))return n;return 100}
 function earned(){
   const e=new Set(), all=[];let bosses=0, golds=0;
   for(let n=1;n<=100;n++){const T=tries(n);T.forEach(t=>all.push(t.d));
@@ -230,6 +236,7 @@ function renderHud(){
   $("bar").querySelectorAll(".ms").forEach(m=>m.remove());
   MILES.forEach(m=>{const d=document.createElement("div");d.className="ms"+(t>=m?" got":"");d.style.left=(m/300*100)+"%";d.textContent=t>=m?"🎁":"";d.title=`${m} stars: reward`;$("bar").appendChild(d)});
   $("nextBtn").textContent=`▶ Level ${cur}`;
+  const ob=$("openAllBtn"); ob.classList.toggle("on",openAll()); ob.textContent=openAll()?"🔓 Coach mode ON: all levels open. Tap to lock again.":"🔒 Levels open as he earns them. Tap for coach mode (open all).";
   $("rank").textContent=`World ${Math.ceil(cur/10)} · ${WORLDS[Math.ceil(cur/10)-1][0]}`;
   $("badges").innerHTML=BADGES.map(b=>`<button class="bdg${e.has(b.id)?" got":""}" data-b="${b.id}" aria-label="${esc(b.n)}${e.has(b.id)?" (earned)":""}">${b.i}</button>`).join("");
   return {e,bosses};
@@ -313,12 +320,12 @@ function persist(){
   if(ref){const snap=JSON.parse(JSON.stringify(S));writing=writing.then(()=>ref.set(snap)).then(()=>{$("sync").textContent="Saved ✓"}).catch(e=>{$("sync").textContent="Couldn't save online. Saved on this phone."})}
 }
 function saveTry(n,s){
-  const L=LV[n-1], before={gold:goldDate(n),k:stars(n),tot:total(),e:earned().e,open:new Set(Array.from({length:100},(_,i)=>i+1).filter(unlocked))};
+  const L=LV[n-1], before={gold:goldDate(n),k:stars(n),tot:total(),e:earned().e,open:new Set(Array.from({length:100},(_,i)=>i+1).filter(earnedOpen))};
   S.lv[n]=[...tries(n),{d:today(),s}];
   persist();
   const k=starsOf(n,s), after=earned().e, tot=total();
   const newB=BADGES.filter(b=>after.has(b.id)&&!before.e.has(b.id));
-  const newOpen=Array.from({length:100},(_,i)=>i+1).filter(x=>unlocked(x)&&!before.open.has(x));
+  const newOpen=Array.from({length:100},(_,i)=>i+1).filter(x=>earnedOpen(x)&&!before.open.has(x));
   const mile=MILES.find(m=>before.tot<m&&tot>=m);
   closeSheet(); render();
   let msg;
@@ -358,6 +365,7 @@ function step(){
 $("map").addEventListener("click",e=>{const b=e.target.closest(".node");if(b)openSheet(+b.dataset.n)});
 $("nextBtn").onclick=()=>{const n=current();const el=document.querySelector(`.node[data-n="${n}"]`);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});openSheet(n)};
 $("goldBtn").onclick=()=>{const n=goldPick();if(!n)return;const el=document.querySelector(`.node[data-n="${n}"]`);if(el)el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});openSheet(n)};
+$("openAllBtn").onclick=()=>{S.openAll=!openAll();persist();render();toast(openAll()?"🔓 All levels open":"🔒 Levels locked by progress again")};
 $("scrim").onclick=closeSheet;
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sel)closeSheet()});
 $("badges").addEventListener("click",e=>{const b=e.target.closest(".bdg");if(!b)return;const B=BADGES.find(x=>x.id===b.dataset.b);const {e:E,bosses}=earned();
@@ -375,7 +383,7 @@ $("sync").textContent="Saved on this phone";
     ref=db.doc("progress/george");
     ref.onSnapshot(snap=>{
       if(!snap.metadata.fromCache)clearTimeout(timer);
-      if(snap.exists){const d=snap.data();if(d&&d.lv){S={v:1,lv:JSON.parse(JSON.stringify(d.lv))};try{localStorage.setItem("gqm",JSON.stringify(S))}catch(e){}render()}}
+      if(snap.exists){const d=snap.data();if(d&&d.lv){S={v:1,lv:JSON.parse(JSON.stringify(d.lv))};if(typeof d.openAll==="boolean")S.openAll=d.openAll;try{localStorage.setItem("gqm",JSON.stringify(S))}catch(e){}render()}}
       if(!snap.metadata.fromCache)$("sync").textContent="Progress synced ✓";
     },err=>{clearTimeout(timer);$("sync").textContent="Couldn't reach online progress. Saving on this phone."});
   }catch(e){clearTimeout(timer);$("sync").textContent="Progress saves on this phone only."}
